@@ -1,0 +1,22 @@
+name: Rust (x86_64-unknown-redox)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Add target x86_64-unknown-redox
+      run: rustup target add x86_64-unknown-redox
+    - name: Build
+      run: cargo build --verbose --target=x86_64-unknown-redox
