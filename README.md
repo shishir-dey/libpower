@@ -1,1 +1,1 @@
-# libpower
+![libpower logo](assets/logo.jpg "libpower logo")
