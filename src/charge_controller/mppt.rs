@@ -43,6 +43,11 @@ impl MPPTParamsPerturbAndObserve {
     }
 
     #[allow(dead_code)]
+    pub fn get_mppt_v_out(&self) -> f32 {
+        self.mppt_v_out
+    }
+
+    #[allow(dead_code)]
     pub fn calculate(&mut self, pv_i: f32, pv_v: f32) {
         if self.mppt_first {
             self.pv_v_prev = self.pv_v;
