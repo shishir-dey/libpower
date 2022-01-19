@@ -9,5 +9,5 @@ pub mod misc;
 pub mod optimization;
 pub mod phase_locked_loop;
 pub mod signal;
-pub mod system;
+pub mod kernel;
 pub mod transform;

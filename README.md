@@ -20,6 +20,6 @@ libpower is a Rust library containing algorithms commonly used in power electron
 | Optimization | - | [Optimization problem](https://en.wikipedia.org/wiki/Optimization_problem) |
 | Phase Locked Loop | pll.rs | [Phase-locked loop](https://en.wikipedia.org/wiki/Phase-locked_loop) |
 | Signal      | wavegen.rs       | Generate desired signals in the form of Rust arrays |
-| System      | tick.rs       | Implement a ticking mechanism that has to be managed by the application. To be used by the library for keeping track of time |
+| Kernel      | tick.rs       | Implement a ticking mechanism that has to be managed by the application. To be used by the modules that need to be run as a process |
 | Transform      | fft.rs       | [Fast Fourier Transform](https://en.wikipedia.org/wiki/Fast_Fourier_transform) |
 | Misc      | misc.rs       | Contains additional helper functions doing the math |
