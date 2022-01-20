@@ -1,5 +1,11 @@
 ![libpower logo](assets/logo.jpg "libpower logo")
 
+![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/shishir-dey/libpower/Rust%20(host))
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/shishir-dey/libpower)
+![GitHub last commit](https://img.shields.io/github/last-commit/shishir-dey/libpower)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+
 
 <h3>About the project</h3>
 
