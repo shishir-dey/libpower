@@ -1,3 +1,5 @@
+/* Second Order Generalized Integrator */
+
 /* Placeholder for module's unit tests */
 #[cfg(test)]
 #[allow(unused_imports)]
