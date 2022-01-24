@@ -51,3 +51,10 @@ libpower is a Rust library containing algorithms commonly used in power electron
 | Transform      | ipark.rs       | Inverse Park Transform |
 | Transform      | park.rs       | Park Transform |
 | Misc      | misc.rs       | Contains additional helper functions doing the math |
+
+
+<h3>References</h3>
+
++ [Texas Instruments Solar library](https://e2e.ti.com/cfs-file/__key/communityserver-discussions-components-files/171/SolarLib.pdf)
+
++ [GitHub/pms67](https://github.com/pms67)
