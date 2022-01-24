@@ -39,6 +39,7 @@ libpower is a Rust library containing algorithms commonly used in power electron
 | Control      | pid.rs       | [PID controller](https://en.wikipedia.org/wiki/PID_controller) |
 | Filter      | fir.rs       | [Finite impulse response](https://en.wikipedia.org/wiki/Finite_impulse_response) |
 | Filter      | iir.rs       | [Infinite impulse response](https://en.wikipedia.org/wiki/Infinite_impulse_response) |
+| Filter      | kalman.rs       | [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) |
 | Inverter      | spwm.rs       | [Pulse-width modulation: Electrical](https://en.wikipedia.org/wiki/Pulse-width_modulation#Electrical) |
 | Optimization | - | [Optimization problem](https://en.wikipedia.org/wiki/Optimization_problem) |
 | Phase Locked Loop | sogi.rs | Second Order Generalized Integrator |
