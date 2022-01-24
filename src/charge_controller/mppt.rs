@@ -49,6 +49,7 @@ pub mod perturb_and_observe {
             if self.mppt_first {
                 self.pv_v_prev = self.pv_v;
                 self.pv_power_prev = self.pv_power;
+                self.mppt_first = false;
             } else {
                 self.pv_i = pv_i;
                 self.pv_v = pv_v;
@@ -159,6 +160,7 @@ pub mod incremental_conductance {
             if self.mppt_first {
                 self.pv_v_old = self.pv_v;
                 self.pv_i_old = self.pv_i;
+                self.mppt_first = false;
             } else {
                 self.pv_i = pv_i;
                 self.pv_v = pv_v;

@@ -40,3 +40,15 @@ impl KalmanFilter {
         self.x_est_last = self.x_est;
     }
 }
+
+/* Placeholder for module's unit tests */
+#[cfg(test)]
+#[allow(unused_imports)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_will_always_fail() {
+        assert!(false);
+    }
+}
