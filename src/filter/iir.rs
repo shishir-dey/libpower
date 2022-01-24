@@ -7,9 +7,9 @@ struct IIRFilterParams {
 
 impl IIRFilterParams {
     #[allow(dead_code, unused_variables)]
-    pub fn new(order: u8) -> IIRFilterParams {
+    pub fn new(alpha: f32, order: u8) -> IIRFilterParams {
         IIRFilterParams {
-            alpha: 0.0,
+            alpha: alpha,
             out: 0.0,
             order: 1,
         }
