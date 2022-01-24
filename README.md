@@ -1,10 +1,27 @@
-![libpower logo](assets/logo.jpg "libpower logo")
+<p align="center">
+    <img src="assets/logo.jpg" alt="libpower-logo"/>
+</p>
 
-![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/shishir-dey/libpower/Rust%20(host))
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/shishir-dey/libpower)
-![GitHub last commit](https://img.shields.io/github/last-commit/shishir-dey/libpower)
-![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+<p align="center">
+    <a href="https://img.shields.io/badge/license-MIT-blue.svg">
+        <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="GitHub license" />
+    </a>&nbsp;
+    <a href="https://img.shields.io/github/workflow/status/shishir-dey/libpower/Rust%20(host)">
+        <img src="https://img.shields.io/github/workflow/status/shishir-dey/libpower/Rust%20(host)"
+            alt="GitHub Workflow Status" />
+    </a>&nbsp;
+    <a href="https://img.shields.io/github/commit-activity/m/shishir-dey/libpower">
+        <img src="https://img.shields.io/github/commit-activity/m/shishir-dey/libpower" alt="GitHub commit activity" />
+    </a>&nbsp;
+    <a href="https://img.shields.io/github/last-commit/shishir-dey/libpower">
+        <img src="https://img.shields.io/github/last-commit/shishir-dey/libpower" alt="GitHub last commit" />
+    </a>&nbsp;
+    <a href="https://img.shields.io/badge/PRs-welcome-brightgreen.svg">
+        <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome" />
+    </a>&nbsp;
+</p>
+
+<hr>
 
 
 <h3>About the project</h3>
