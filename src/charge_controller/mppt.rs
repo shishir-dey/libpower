@@ -4,7 +4,7 @@ pub mod perturb_and_observe {
         DECREMENT,
     }
     #[allow(dead_code)]
-    struct MPPTParams {
+    struct MPPT {
         pv_i: f32,
         pv_v: f32,
         pv_v_prev: f32,
@@ -20,10 +20,10 @@ pub mod perturb_and_observe {
         mppt_enable: bool,
         mppt_first: bool,
     }
-    impl MPPTParams {
+    impl MPPT {
         #[allow(dead_code)]
-        pub fn new() -> MPPTParams {
-            MPPTParams {
+        pub fn new() -> MPPT {
+            MPPT {
                 pv_i: 0.0,
                 pv_v: 0.0,
                 pv_v_prev: 0.0,
@@ -102,7 +102,7 @@ pub mod incremental_conductance {
         DECREMENT,
     }
     #[allow(dead_code)]
-    struct MPPTParams {
+    struct MPPT {
         pv_i: f32,
         pv_v: f32,
         pv_i_high: f32,
@@ -125,10 +125,10 @@ pub mod incremental_conductance {
     }
 
     #[allow(dead_code)]
-    impl MPPTParams {
+    impl MPPT {
         #[allow(dead_code)]
-        pub fn new() -> MPPTParams {
-            MPPTParams {
+        pub fn new() -> MPPT {
+            MPPT {
                 pv_i: 0.0,
                 pv_v: 0.0,
                 pv_i_high: 0.0,

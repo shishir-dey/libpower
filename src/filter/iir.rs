@@ -1,14 +1,14 @@
 #[allow(dead_code)]
-struct IIRFilterParams {
+struct IIRFilter {
     alpha: f32,
     out: f32,
     order: u8,
 }
 
-impl IIRFilterParams {
+impl IIRFilter {
     #[allow(dead_code, unused_variables)]
-    pub fn new(alpha: f32, order: u8) -> IIRFilterParams {
-        IIRFilterParams {
+    pub fn new(alpha: f32, order: u8) -> IIRFilter {
+        IIRFilter {
             alpha: alpha,
             out: 0.0,
             order: 1,
