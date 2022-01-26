@@ -1,3 +1,10 @@
+/*
+* Revision: V1.0
+* Author: Shishir Dey
+* Date: January 24th, 2022
+* Description: Initial commit
+*/
+
 struct KalmanFilter {
     x_est: f32,      /* Output estimate */
     x_est_last: f32, /* Last output estimate */

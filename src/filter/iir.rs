@@ -1,3 +1,10 @@
+/*
+* Revision: V1.0
+* Author: Shishir Dey
+* Date: January 24th, 2022
+* Description: Initial commit. Currently supports only first order filter
+*/
+
 #[allow(dead_code)]
 struct IIRFilter {
     alpha: f32,

@@ -1,3 +1,10 @@
+/*
+* Revision: V1.0
+* Author: Shishir Dey
+* Date: January 20th, 2022
+* Description: Initial commit
+*/
+
 #[allow(dead_code)]
 pub fn calculate_checksum(data: &[u8]) -> u16 {
     let mut crc: u16 = 0;
