@@ -1,3 +1,13 @@
+#[allow(dead_code)]
+struct Clarke {
+    a: f32,
+    b: f32,
+    c: f32,
+    alpha: f32,
+    beta: f32,
+    zero: f32,
+}
+
 /* Placeholder for module's unit tests */
 #[cfg(test)]
 #[allow(unused_imports)]

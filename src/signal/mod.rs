@@ -1,1 +1,3 @@
-pub mod wavegen;
+pub mod filter;
+pub mod generator;
+pub mod transform;
