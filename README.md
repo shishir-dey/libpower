@@ -35,6 +35,7 @@ libpower is a Rust library containing algorithms commonly used in power electron
 | ----------- | ----------- | ----------- |
 | Battery | - | - |
 | Charge Controller      | mppt.rs       | [Maximum power point tracking](https://en.wikipedia.org/wiki/Maximum_power_point_tracking) |
+| Control      | observer/luenberger.rs       | [Luenberger Observer](https://en.wikipedia.org/wiki/State_observer) |
 | Control      | bode_plot.rs       | [Bode plot](https://en.wikipedia.org/wiki/Bode_plot) |
 | Control      | pid.rs       | [PID controller](https://en.wikipedia.org/wiki/PID_controller) |
 | Control      | pr.rs       | [Proportional Resonant controller](https://imperix.com/doc/implementation/proportional-resonant-controller) |
@@ -45,11 +46,11 @@ libpower is a Rust library containing algorithms commonly used in power electron
 | Phase Locked Loop | sogi.rs | Second Order Generalized Integrator |
 | Portable | hal.rs | Hardware Abstraction Layer |
 | Portable | osal.rs | OS Abstraction Layer |
-| Signal      | Filter/fir.rs       | [Finite impulse response](https://en.wikipedia.org/wiki/Finite_impulse_response) |
-| Signal      | Filter/iir.rs       | [Infinite impulse response](https://en.wikipedia.org/wiki/Infinite_impulse_response) |
-| Signal      | Filter/kalman.rs       | [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) |
-| Signal      | Generator/generator.rs       | Generate desired signals in the form of Rust arrays |
-| Signal      | Transform/fft.rs       | [Fast Fourier Transform](https://en.wikipedia.org/wiki/Fast_Fourier_transform) |
+| Signal      | filter/fir.rs       | [Finite impulse response](https://en.wikipedia.org/wiki/Finite_impulse_response) |
+| Signal      | filter/iir.rs       | [Infinite impulse response](https://en.wikipedia.org/wiki/Infinite_impulse_response) |
+| Signal      | filter/kalman.rs       | [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) |
+| Signal      | generator/generator.rs       | Generate desired signals in the form of Rust arrays |
+| Signal      | transform/fft.rs       | [Fast Fourier Transform](https://en.wikipedia.org/wiki/Fast_Fourier_transform) |
 | Transform      | abc_dq0.rs       | ABC to DQ0 Transform |
 | Transform      | clarke.rs       | Clarke Transform |
 | Transform      | dq0_abc.rs       | DQ0 to ABC Transform |
