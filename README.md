@@ -37,6 +37,7 @@ libpower is a Rust library containing algorithms commonly used in power electron
 | Charge Controller      | mppt.rs       | [Maximum power point tracking](https://en.wikipedia.org/wiki/Maximum_power_point_tracking) |
 | Control      | bode_plot.rs       | [Bode plot](https://en.wikipedia.org/wiki/Bode_plot) |
 | Control      | pid.rs       | [PID controller](https://en.wikipedia.org/wiki/PID_controller) |
+| Control      | pr.rs       | [Proportional Resonant controller](https://imperix.com/doc/implementation/proportional-resonant-controller) |
 | Data      | nn.rs       | [Neural network](https://en.wikipedia.org/wiki/Neural_network) |
 | Data      | svm.rs       | [Support-vector machine](https://en.wikipedia.org/wiki/Support-vector_machine) |
 | Inverter      | spwm.rs       | [Pulse-width modulation: Electrical](https://en.wikipedia.org/wiki/Pulse-width_modulation#Electrical) |
