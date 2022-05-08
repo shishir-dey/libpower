@@ -4,7 +4,7 @@
 */
 
 #[allow(dead_code)]
-struct Clarke {
+pub struct Clarke {
     a: f32,
     b: f32,
     c: f32,

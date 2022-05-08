@@ -1,5 +1,5 @@
 #[allow(dead_code)]
-enum SignalType {
+pub enum SignalType {
     DC,
     Sine,
     FullWaveRectifiedSine,
@@ -12,7 +12,7 @@ enum SignalType {
 }
 
 #[allow(dead_code)]
-struct Signal {
+pub struct Signal {
     wave_type: SignalType,
     amplitude: f32,
     phase: f32,

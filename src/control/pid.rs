@@ -4,7 +4,7 @@
 */
 
 #[allow(dead_code)]
-struct PID {
+pub struct PID {
     kp: f32,
     ki: f32,
     kd: f32,

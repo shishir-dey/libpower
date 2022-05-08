@@ -4,7 +4,7 @@
 */
 
 #[allow(dead_code)]
-struct IIRFilter {
+pub struct IIRFilter {
     alpha: f32,
     out: f32,
     order: u8,

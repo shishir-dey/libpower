@@ -4,7 +4,7 @@
 */
 
 #[allow(dead_code)]
-struct OrthogonalSignalGenerator {
+pub struct OrthogonalSignalGenerator {
     k: f32,
     x: f32,
     y: f32,
@@ -18,14 +18,14 @@ struct OrthogonalSignalGenerator {
 }
 
 #[allow(dead_code)]
-struct NotchFilter {
+pub struct NotchFilter {
     a1: f32,
     b0: f32,
     b1: f32,
 }
 
 #[allow(dead_code)]
-struct SOGI {
+pub struct SOGI {
     u: [f32; 3],                          /* 1ph AC signal measured and normalized */
     osg_u: [f32; 3],                      /* Estimated grid voltage */
     osg_qu: [f32; 3],                     /* Estimated orthogonal grid voltage */

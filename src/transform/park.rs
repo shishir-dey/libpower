@@ -4,7 +4,7 @@
 */
 
 #[allow(dead_code)]
-struct Park {
+pub struct Park {
     alpha: f32,
     beta: f32,
     zero: f32,

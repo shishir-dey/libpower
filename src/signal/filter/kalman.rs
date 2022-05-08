@@ -3,7 +3,7 @@
 * Description: Initial commit
 */
 
-struct KalmanFilter {
+pub struct KalmanFilter {
     x_est: f32,      /* Output estimate */
     x_est_last: f32, /* Last output estimate */
     x_temp_est: f32, /* Temporary output estimate */

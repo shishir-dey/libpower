@@ -108,7 +108,7 @@ pub mod incremental_conductance {
         DECREMENT,
     }
     #[allow(dead_code)]
-    struct MPPT {
+    pub struct MPPT {
         pv_i: f32,
         pv_v: f32,
         pv_i_high: f32,
