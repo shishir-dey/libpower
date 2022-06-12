@@ -40,8 +40,8 @@ libpower is a Rust library containing algorithms commonly used in power electron
 | Control      | pr.rs       | [Proportional Resonant controller](https://imperix.com/doc/implementation/proportional-resonant-controller) |
 | Data      | nn.rs       | [Neural network](https://en.wikipedia.org/wiki/Neural_network) |
 | Data      | svm.rs       | [Support-vector machine](https://en.wikipedia.org/wiki/Support-vector_machine) |
-| Devices      | mppt.rs       | [Maximum power point tracking](https://en.wikipedia.org/wiki/Maximum_power_point_tracking) |
-| Devices      | spwm.rs       | [Pulse-width modulation: Electrical](https://en.wikipedia.org/wiki/Pulse-width_modulation#Electrical) |
+| Devices      | charge_controller/mppt.rs       | [Maximum power point tracking](https://en.wikipedia.org/wiki/Maximum_power_point_tracking) |
+| Devices      | inverter/*       | [Inverter](https://en.wikipedia.org/wiki/Power_inverter) |
 | Math      | -       | Math, for when you are high |
 | Phase Locked Loop | sogi.rs | Second Order Generalized Integrator |
 | Portable | hal.rs | Hardware Abstraction Layer |
