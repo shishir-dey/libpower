@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="assets/logo.jpg" alt="libpower-logo"/>
+    <img src="assets/libpower-logo-small.png" alt="libpower-logo"/>
 </p>
 
 <p align="center">
