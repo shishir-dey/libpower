@@ -6,8 +6,8 @@
     <a href="https://img.shields.io/badge/license-MIT-blue.svg">
         <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="GitHub license" />
     </a>&nbsp;
-    <a href="https://img.shields.io/github/workflow/status/shishir-dey/libpower/Rust%20(host)">
-        <img src="https://img.shields.io/github/workflow/status/shishir-dey/libpower/Rust%20(host)"
+    <a href="https://img.shields.io/github/actions/workflow/status/shishir-dey/libpower/rust_host.yml?branch=main">
+        <img src="https://img.shields.io/github/actions/workflow/status/shishir-dey/libpower/rust_host.yml?branch=main"
             alt="GitHub Workflow Status" />
     </a>&nbsp;
     <a href="https://img.shields.io/github/commit-activity/m/shishir-dey/libpower">
