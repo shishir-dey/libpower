@@ -1,8 +1,3 @@
-/*
-* Version 1.0 | Shishir Dey | January 24th, 2022
-* Description: Initial commit
-*/
-
 pub struct KalmanFilter {
     x_est: f32,      /* Output estimate */
     x_est_last: f32, /* Last output estimate */
@@ -16,7 +11,6 @@ pub struct KalmanFilter {
 }
 
 impl KalmanFilter {
-    #[allow(dead_code)]
     pub fn new(q: f32, r: f32) -> KalmanFilter {
         KalmanFilter {
             x_est: 0.0,
@@ -30,11 +24,9 @@ impl KalmanFilter {
             r: r,
         }
     }
-    #[allow(dead_code)]
     pub fn get_output_estimate(&self) -> f32 {
         self.x_est
     }
-    #[allow(dead_code)]
     pub fn update(&mut self, z: f32) {
         self.x_temp_est = self.x_est_last;
         self.p_temp = self.p_last + self.q;
@@ -43,17 +35,5 @@ impl KalmanFilter {
         self.p = (1.0 - self.k) * self.p_temp;
         self.p_last = self.p;
         self.x_est_last = self.x_est;
-    }
-}
-
-/* Placeholder for module's unit tests */
-#[cfg(test)]
-#[allow(unused_imports)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_will_always_fail() {
-        assert!(false);
     }
 }

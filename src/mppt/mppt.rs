@@ -1,14 +1,8 @@
-/*
-* Version 1.0 | Shishir Dey | January 25th, 2022
-* Description: Initial commit
-*/
-
 pub mod perturb_and_observe {
     enum VMPPAction {
         INCREMENT,
         DECREMENT,
     }
-    #[allow(dead_code)]
     pub struct MPPT {
         pv_i: f32,
         pv_v: f32,
@@ -26,7 +20,6 @@ pub mod perturb_and_observe {
         mppt_first: bool,
     }
     impl MPPT {
-        #[allow(dead_code)]
         pub fn new() -> MPPT {
             MPPT {
                 pv_i: 0.0,
@@ -45,11 +38,9 @@ pub mod perturb_and_observe {
                 mppt_first: true,
             }
         }
-        #[allow(dead_code)]
         pub fn get_mppt_v_out(&self) -> f32 {
             self.mppt_v_out
         }
-        #[allow(dead_code)]
         pub fn calculate(&mut self, pv_i: f32, pv_v: f32) {
             if self.mppt_first {
                 self.pv_v_prev = self.pv_v;
@@ -107,7 +98,6 @@ pub mod incremental_conductance {
         INCREMENT,
         DECREMENT,
     }
-    #[allow(dead_code)]
     pub struct MPPT {
         pv_i: f32,
         pv_v: f32,
@@ -130,9 +120,7 @@ pub mod incremental_conductance {
         mppt_first: bool,
     }
 
-    #[allow(dead_code)]
     impl MPPT {
-        #[allow(dead_code)]
         pub fn new() -> MPPT {
             MPPT {
                 pv_i: 0.0,
@@ -156,11 +144,9 @@ pub mod incremental_conductance {
                 mppt_first: true,
             }
         }
-        #[allow(dead_code)]
         pub fn get_mppt_v_out(&self) -> f32 {
             self.mppt_v_out
         }
-        #[allow(dead_code)]
         pub fn calculate(&mut self, pv_i: f32, pv_v: f32) {
             if self.mppt_first {
                 self.pv_v_old = self.pv_v;
@@ -241,17 +227,5 @@ pub mod incremental_conductance {
             self.pv_v_old = self.pv_v;
             self.pv_i_old = self.pv_i;
         }
-    }
-}
-
-/* Placeholder for module's unit tests */
-#[cfg(test)]
-#[allow(unused_imports)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_will_always_fail() {
-        assert!(false);
     }
 }
