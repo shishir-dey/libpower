@@ -1,4 +1,3 @@
-#[allow(dead_code)]
 pub enum SignalType {
     DC,
     Sine,
@@ -11,7 +10,6 @@ pub enum SignalType {
     GaussianNoise,
 }
 
-#[allow(dead_code)]
 pub struct Signal {
     wave_type: SignalType,
     amplitude: f32,
@@ -34,7 +32,6 @@ pub struct Signal {
 }
 
 impl Signal {
-    #[allow(dead_code)]
     pub fn new(wave_type: SignalType, amplitude: f32, frequency: f32, num_samples: u32) -> Signal {
         Signal {
             wave_type: wave_type,
@@ -55,17 +52,5 @@ impl Signal {
             crest_factor: 0.0,
             thd: 0.0,
         }
-    }
-}
-
-/* Placeholder for module's unit tests */
-#[cfg(test)]
-#[allow(unused_imports)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_will_always_fail() {
-        assert!(false);
     }
 }

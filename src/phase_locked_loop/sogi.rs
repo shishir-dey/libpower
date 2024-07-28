@@ -1,9 +1,3 @@
-/*
-* Version 1.0 | Shishir Dey | April 24th, 2022
-* Description: Initial commit (Work in progress)
-*/
-
-#[allow(dead_code)]
 pub struct OrthogonalSignalGenerator {
     k: f32,
     x: f32,
@@ -17,14 +11,12 @@ pub struct OrthogonalSignalGenerator {
     qb2: f32,
 }
 
-#[allow(dead_code)]
 pub struct NotchFilter {
     a1: f32,
     b0: f32,
     b1: f32,
 }
 
-#[allow(dead_code)]
 pub struct SOGI {
     u: [f32; 3],                          /* 1ph AC signal measured and normalized */
     osg_u: [f32; 3],                      /* Estimated grid voltage */
@@ -43,7 +35,6 @@ pub struct SOGI {
 }
 
 impl SOGI {
-    #[allow(dead_code)]
     pub fn new(fnom: f32, delta_t: f32) -> SOGI {
         let mut sogi = SOGI {
             // TODO
@@ -80,28 +71,13 @@ impl SOGI {
         sogi.init(fnom);
         sogi
     }
-    #[allow(dead_code)]
     pub fn init(&mut self, fnom: f32) {
         self.fnom = fnom;
     }
-    #[allow(dead_code)]
     pub fn coeff_update(&mut self) {
         // TODO
     }
-    #[allow(dead_code)]
     pub fn run(&mut self) {
         // TODO
-    }
-}
-
-/* Placeholder for module's unit tests */
-#[cfg(test)]
-#[allow(unused_imports)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_will_always_fail() {
-        assert!(false);
     }
 }

@@ -1,9 +1,3 @@
-/*
-* Version 1.0 | Shishir Dey | January 15th, 2022
-* Description: Initial commit
-*/
-
-#[allow(dead_code)]
 pub struct PID {
     kp: f32,
     ki: f32,
@@ -16,7 +10,6 @@ pub struct PID {
 }
 
 impl PID {
-    #[allow(dead_code)]
     pub fn new(kp: f32, ki: f32, kd: f32) -> PID {
         PID {
             kp: kp,
@@ -29,7 +22,6 @@ impl PID {
             cumulative_error: 0.0,
         }
     }
-    #[allow(dead_code)]
     pub fn update(&mut self, setpoint: f32, current_position: f32, current_time: f32) -> f32 {
         self.current_time = current_time;
         let delta_time = self.current_time - self.previous_time;
@@ -48,17 +40,5 @@ impl PID {
         } else {
             output
         }
-    }
-}
-
-/* Placeholder for module's unit tests */
-#[cfg(test)]
-#[allow(unused_imports)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_will_always_fail() {
-        assert!(false);
     }
 }
