@@ -41,6 +41,28 @@ pub mod perturb_and_observe {
         pub fn get_mppt_v_out(&self) -> f32 {
             self.mppt_v_out
         }
+
+        pub fn get_pv_i(&self) -> f32 {
+            self.pv_i
+        }
+
+        pub fn get_pv_v(&self) -> f32 {
+            self.pv_v
+        }
+        pub fn get_pv_power(&self) -> f32 {
+            self.pv_power
+        }
+        pub fn set_mppt_v_out_max(&mut self, value: f32) {
+            self.mppt_v_out_max = value;
+        }
+
+        pub fn set_mppt_v_out_min(&mut self, value: f32) {
+            self.mppt_v_out_min = value;
+        }
+
+        pub fn set_step_size(&mut self, value: f32) {
+            self.step_size = value;
+        }
         pub fn calculate(&mut self, pv_i: f32, pv_v: f32) {
             if self.mppt_first {
                 self.pv_v_prev = self.pv_v;
@@ -50,25 +72,18 @@ pub mod perturb_and_observe {
                 self.pv_i = pv_i;
                 self.pv_v = pv_v;
                 self.pv_power = self.pv_i * self.pv_v;
-                if self.pv_power > self.pv_power_prev {
-                    self.delta_pv_power = self.pv_power - self.pv_power_prev;
-                } else {
-                    self.delta_pv_power = self.pv_power_prev - self.pv_power;
-                }
-                if self.delta_pv_power > self.delta_p_min {
-                    if self.pv_power > self.pv_power_prev {
-                        if self.pv_v > self.pv_v_prev {
-                            self.mppt_v_out_action = VMPPAction::INCREMENT;
-                        } else {
-                            self.mppt_v_out_action = VMPPAction::DECREMENT;
-                        }
+
+                // Calculate power change
+                let delta_pv_power = self.pv_power - self.pv_power_prev;
+                if delta_pv_power > self.delta_p_min {
+                    // Determine whether to INCREMENT or DECREMENT
+                    if self.pv_v > self.pv_v_prev {
+                        self.mppt_v_out_action = VMPPAction::INCREMENT;
                     } else {
-                        if self.pv_v > self.pv_v_prev {
-                            self.mppt_v_out_action = VMPPAction::DECREMENT;
-                        } else {
-                            self.mppt_v_out_action = VMPPAction::INCREMENT;
-                        }
+                        self.mppt_v_out_action = VMPPAction::DECREMENT;
                     }
+
+                    // Adjust voltage output based on action
                     match self.mppt_v_out_action {
                         VMPPAction::INCREMENT => {
                             if self.mppt_v_out + self.step_size > self.mppt_v_out_max {
@@ -86,6 +101,7 @@ pub mod perturb_and_observe {
                         }
                     }
                 }
+                // Save the previous values
                 self.pv_v_prev = self.pv_v;
                 self.pv_power_prev = self.pv_power;
             }
@@ -119,7 +135,6 @@ pub mod incremental_conductance {
         mppt_enable: bool,
         mppt_first: bool,
     }
-
     impl MPPT {
         pub fn new() -> MPPT {
             MPPT {
@@ -144,8 +159,35 @@ pub mod incremental_conductance {
                 mppt_first: true,
             }
         }
+        pub fn get_pv_i(&self) -> f32 {
+            self.pv_i
+        }
+
+        pub fn get_pv_v(&self) -> f32 {
+            self.pv_v
+        }
+
+        pub fn get_pv_i_high(&self) -> f32 {
+            self.pv_i_high
+        }
+
+        pub fn get_pv_v_high(&self) -> f32 {
+            self.pv_v_high
+        }
+
         pub fn get_mppt_v_out(&self) -> f32 {
             self.mppt_v_out
+        }
+        pub fn set_mppt_v_out_max(&mut self, mppt_v_out_max: f32) {
+            self.mppt_v_out_max = mppt_v_out_max;
+        }
+
+        pub fn set_mppt_v_out_min(&mut self, mppt_v_out_min: f32) {
+            self.mppt_v_out_min = mppt_v_out_min;
+        }
+
+        pub fn set_step_size(&mut self, step_size: f32) {
+            self.step_size = step_size;
         }
         pub fn calculate(&mut self, pv_i: f32, pv_v: f32) {
             if self.mppt_first {
@@ -158,74 +200,42 @@ pub mod incremental_conductance {
                 self.delta_pv_i = self.pv_i - self.pv_i_old;
                 self.delta_pv_v = self.pv_v - self.pv_v_old;
 
-                let mut delta_pv_v_valid = false;
-                let mut delta_pv_i_valid = false;
+                // Determine if the conductance is positive or negative
                 if self.delta_pv_v > 0.0 {
-                    if self.delta_pv_v > self.pv_v_high {
-                        delta_pv_v_valid = true;
+                    if self.delta_pv_i > 0.0 {
+                        self.mppt_v_out_action = VMPPAction::INCREMENT;
+                    } else {
+                        self.mppt_v_out_action = VMPPAction::DECREMENT;
                     }
                 } else {
-                    if self.delta_pv_v < self.pv_v_low {
-                        delta_pv_v_valid = true;
+                    if self.delta_pv_i < 0.0 {
+                        self.mppt_v_out_action = VMPPAction::INCREMENT;
+                    } else {
+                        self.mppt_v_out_action = VMPPAction::DECREMENT;
                     }
                 }
-                if self.delta_pv_i > 0.0 {
-                    if self.delta_pv_i > self.pv_i_high {
-                        delta_pv_i_valid = true;
-                    }
-                } else {
-                    if self.delta_pv_i < self.pv_i_low {
-                        delta_pv_i_valid = true;
-                    }
-                }
-                if delta_pv_i_valid && delta_pv_v_valid {
-                    if self.delta_pv_v > 0.0 {
-                        if self.delta_pv_i == 0.0 {
-                            if self.delta_pv_i == 0.0 {
-                                self.pv_v_old = self.pv_v;
-                                self.pv_i_old = self.pv_i;
-                            } else {
-                                if self.delta_pv_i > 0.0 {
-                                    self.mppt_v_out_action = VMPPAction::DECREMENT;
-                                } else {
-                                    self.mppt_v_out_action = VMPPAction::INCREMENT;
-                                }
-                            }
+
+                // Adjust voltage output based on action
+                match self.mppt_v_out_action {
+                    VMPPAction::INCREMENT => {
+                        if self.mppt_v_out + self.step_size > self.mppt_v_out_max {
+                            self.mppt_v_out = self.mppt_v_out_max;
                         } else {
-                            self.conductance = -(self.pv_i / self.pv_v);
-                            self.incremental_conductance = self.delta_pv_i / self.delta_pv_v;
-                            if self.conductance == -self.incremental_conductance {
-                                self.pv_v_old = self.pv_v;
-                                self.pv_i_old = self.pv_i;
-                            } else {
-                                if self.incremental_conductance > -self.conductance {
-                                    self.mppt_v_out_action = VMPPAction::DECREMENT;
-                                } else {
-                                    self.mppt_v_out_action = VMPPAction::INCREMENT;
-                                }
-                            }
+                            self.mppt_v_out += self.step_size;
                         }
                     }
-                    match self.mppt_v_out_action {
-                        VMPPAction::INCREMENT => {
-                            if self.mppt_v_out + self.step_size > self.mppt_v_out_max {
-                                self.mppt_v_out = self.mppt_v_out_max;
-                            } else {
-                                self.mppt_v_out += self.step_size;
-                            }
-                        }
-                        VMPPAction::DECREMENT => {
-                            if self.mppt_v_out - self.step_size < self.mppt_v_out_min {
-                                self.mppt_v_out = self.mppt_v_out_min;
-                            } else {
-                                self.mppt_v_out -= self.step_size;
-                            }
+                    VMPPAction::DECREMENT => {
+                        if self.mppt_v_out - self.step_size < self.mppt_v_out_min {
+                            self.mppt_v_out = self.mppt_v_out_min;
+                        } else {
+                            self.mppt_v_out -= self.step_size;
                         }
                     }
                 }
+                // Save the previous values
+                self.pv_v_old = self.pv_v;
+                self.pv_i_old = self.pv_i;
             }
-            self.pv_v_old = self.pv_v;
-            self.pv_i_old = self.pv_i;
         }
     }
 }
