@@ -1,6 +1,6 @@
 [package]
 name = "libpower"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2018"
 description = "A Rust library containing algorithms commonly used in power electronics systems, targeted for use in embedded systems"
 authors = ["Shishir Dey <r0qck3ntp@mozmail.com>"]
