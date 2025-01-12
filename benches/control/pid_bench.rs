@@ -1,12 +1,12 @@
 extern crate test; // Import the built-in test crate for benchmarks
 
-use libpower::control::pid::PID;
+use libpower::control::cntl_pid::ControllerPID;
 use test::Bencher; // Import Bencher from the test crate for benchmarking
 
 #[bench]
 fn pid_update_benchmark(b: &mut Bencher) {
     // Initialize the PID controller
-    let mut pid = PID::new(1.0, 0.1, 0.01);
+    let mut pid = ControllerPID::new(1.0, 0.1, 0.01);
 
     // Define test parameters
     let setpoint = 10.0;
