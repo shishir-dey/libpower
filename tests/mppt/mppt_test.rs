@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
     mod perturb_and_observe_tests {
-        use libpower::mppt::mppt::perturb_and_observe::MPPT;
+        use libpower::mppt::perturb_and_observe::MPPT;
 
         #[test]
         fn test_new_mppt_initialization() {
@@ -54,7 +54,7 @@ mod tests {
     }
 
     mod incremental_conductance_tests {
-        use libpower::mppt::mppt::incremental_conductance::MPPT;
+        use libpower::mppt::incremental_conductance::MPPT;
 
         #[test]
         fn test_new_mppt_initialization() {
