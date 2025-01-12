@@ -13,3 +13,4 @@ keywords = ["library", "microcontroller", "firmware", "electronics", "embedded-s
 categories = ["embedded", "hardware-support", "science", "simulation"]
 
 [dependencies]
+libm = "0.2"
