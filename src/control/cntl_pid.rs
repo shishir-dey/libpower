@@ -1,4 +1,4 @@
-pub struct PID {
+pub struct ControllerPID {
     kp: f32,
     ki: f32,
     kd: f32,
@@ -9,9 +9,9 @@ pub struct PID {
     cumulative_error: f32,
 }
 
-impl PID {
-    pub fn new(kp: f32, ki: f32, kd: f32) -> PID {
-        PID {
+impl ControllerPID {
+    pub fn new(kp: f32, ki: f32, kd: f32) -> ControllerPID {
+        ControllerPID {
             kp,
             ki,
             kd,
