@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["Coefficients","Controller3p3z","Variables"]};
