@@ -1,0 +1,9 @@
+(function() {
+    var implementors = Object.fromEntries([["libpower",[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/default/trait.Default.html\" title=\"trait core::default::Default\">Default</a> for <a class=\"struct\" href=\"libpower/control/cntl_2p2z/struct.Coefficients.html\" title=\"struct libpower::control::cntl_2p2z::Coefficients\">Coefficients</a>"],["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/default/trait.Default.html\" title=\"trait core::default::Default\">Default</a> for <a class=\"struct\" href=\"libpower/control/cntl_2p2z/struct.Variables.html\" title=\"struct libpower::control::cntl_2p2z::Variables\">Variables</a>"],["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/default/trait.Default.html\" title=\"trait core::default::Default\">Default</a> for <a class=\"struct\" href=\"libpower/control/cntl_3p3z/struct.Coefficients.html\" title=\"struct libpower::control::cntl_3p3z::Coefficients\">Coefficients</a>"],["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/default/trait.Default.html\" title=\"trait core::default::Default\">Default</a> for <a class=\"struct\" href=\"libpower/control/cntl_3p3z/struct.Variables.html\" title=\"struct libpower::control::cntl_3p3z::Variables\">Variables</a>"],["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/default/trait.Default.html\" title=\"trait core::default::Default\">Default</a> for <a class=\"struct\" href=\"libpower/control/cntl_pi/struct.ControllerPI.html\" title=\"struct libpower::control::cntl_pi::ControllerPI\">ControllerPI</a>"]]]]);
+    if (window.register_implementors) {
+        window.register_implementors(implementors);
+    } else {
+        window.pending_implementors = implementors;
+    }
+})()
+//{"start":57,"fragment_lengths":[1572]}
