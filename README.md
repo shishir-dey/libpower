@@ -1,6 +1,10 @@
-<p align="center">
-    <img src="assets/libpower-logo-small.png" alt="libpower-logo"/>
-</p>
+<div align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/libpower-dark.svg" width="1280">
+  <source media="(prefers-color-scheme: light)" srcset="assets/libpower-light.svg" width="1280">
+  <img alt="libpower logo" src="assets/libpower-light.svg" width="1280">
+</picture>
+</div>
 
 <p align="center">
     <a href="https://img.shields.io/badge/license-MIT-blue.svg">
