@@ -1,7 +1,7 @@
 [package]
 name = "libpower"
-version = "0.1.2"
-edition = "2018"
+version = "0.2.0"
+edition = "2024"
 description = "A Rust library containing algorithms commonly used in power electronics systems, targeted for use in embedded systems"
 authors = ["Shishir Dey <r0qck3ntp@mozmail.com>"]
 license = "MIT"
@@ -9,8 +9,8 @@ repository = "https://github.com/shishir-dey/libpower"
 homepage = "https://shishir-dey.github.io/libpower/"
 documentation = "https://shishir-dey.github.io/libpower/"
 readme = "README.md"
-keywords = ["library", "microcontroller", "firmware", "electronics", "embedded-systems"]
-categories = ["embedded", "hardware-support", "science", "simulation"]
+keywords = ["power-electronics", "control-systems", "dsp", "embedded-systems", "mppt"]
+categories = ["embedded", "hardware-support", "science", "algorithms", "no-std"]
 
 [dependencies]
 libm = "0.2"

@@ -17,10 +17,10 @@ mod tests {
             let mut mppt = MPPT::new();
             mppt.calculate(1.0, 2.0);
 
-            // First calculation should only store values
-            assert_eq!(mppt.get_pv_i(), 0.0);
-            assert_eq!(mppt.get_pv_v(), 0.0);
-            assert_eq!(mppt.get_pv_power(), 0.0);
+            // First calculation should store and return the values immediately
+            assert_eq!(mppt.get_pv_i(), 1.0);
+            assert_eq!(mppt.get_pv_v(), 2.0);
+            assert_eq!(mppt.get_pv_power(), 2.0);
         }
 
         #[test]
@@ -69,9 +69,9 @@ mod tests {
             let mut mppt = MPPT::new();
             mppt.calculate(1.0, 2.0);
 
-            // First calculation should only store values
-            assert_eq!(mppt.get_pv_i(), 0.0);
-            assert_eq!(mppt.get_pv_v(), 0.0);
+            // First calculation should store and return the values immediately
+            assert_eq!(mppt.get_pv_i(), 1.0);
+            assert_eq!(mppt.get_pv_v(), 2.0);
         }
 
         #[test]
