@@ -340,11 +340,7 @@ impl<'a> Signal<'a> {
 
                 SignalType::HalfWaveRectifiedSine => {
                     let val = self.amplitude * libm::sinf(angular_freq * t + phase_rad);
-                    if val > 0.0 {
-                        val
-                    } else {
-                        0.0
-                    }
+                    if val > 0.0 { val } else { 0.0 }
                 }
 
                 SignalType::PWM => {
