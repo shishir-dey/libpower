@@ -36,6 +36,9 @@ libpower is a Rust library containing algorithms commonly used in power electron
 
 ```
 src/
+├── battery/                       # Battery management systems
+│   └── soc.rs                     # State of Charge (SoC) estimation using EKF
+│
 ├── control/                       # Control algorithms
 │   ├── cntl_2p2z.rs               # 2-pole 2-zero controller
 │   ├── cntl_3p3z.rs               # 3-pole 3-zero controller
