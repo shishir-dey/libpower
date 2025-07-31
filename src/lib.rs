@@ -20,6 +20,7 @@
 //!
 //! ### Core Modules
 //!
+//! - [`battery`] - Battery management and State of Charge estimation
 //! - [`control`] - Digital control systems (PID, PI, pole-zero controllers)
 //! - [`filter`] - Digital signal processing filters
 //! - [`mppt`] - Maximum Power Point Tracking algorithms
@@ -75,6 +76,21 @@
 //! let reference_voltage = mppt.get_mppt_v_out();
 //! ```
 //!
+//! ### Battery State of Charge Estimation
+//!
+//! ```rust
+//! use libpower::battery::soc::Battery;
+//!
+//! let mut soc_estimator = Battery::new(0.8, 50.0 * 3600.0, 1.0);
+//! soc_estimator.set_process_noise(1e-5);
+//! soc_estimator.set_measurement_noise(5e-4);
+//!
+//! // In your control loop
+//! let battery_current = -15.0; // 15A discharge
+//! let terminal_voltage = 3.6; // Measured terminal voltage
+//! let estimated_soc = soc_estimator.update(battery_current, terminal_voltage);
+//! ```
+//!
 //! ## Design Principles
 //!
 //! ### Performance
@@ -108,6 +124,7 @@
 
 #![no_std]
 
+pub mod battery;
 pub mod control;
 pub mod filter;
 pub mod modulation;
