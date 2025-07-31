@@ -79,9 +79,9 @@
 //! ### Battery State of Charge Estimation
 //!
 //! ```rust
-//! use libpower::battery::soc::SoCEstimator;
+//! use libpower::battery::soc::Battery;
 //!
-//! let mut soc_estimator = SoCEstimator::new(0.8, 50.0 * 3600.0, 1.0);
+//! let mut soc_estimator = Battery::new(0.8, 50.0 * 3600.0, 1.0);
 //! soc_estimator.set_process_noise(1e-5);
 //! soc_estimator.set_measurement_noise(5e-4);
 //!

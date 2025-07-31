@@ -25,9 +25,9 @@
 //! ## Usage Example
 //!
 //! ```rust
-//! use libpower::battery::soc::SoCEstimator;
+//! use libpower::battery::soc::Battery;
 //!
-//! let mut estimator = SoCEstimator::new(0.9, 50.0 * 3600.0, 1.0);
+//! let mut estimator = Battery::new(0.9, 50.0 * 3600.0, 1.0);
 //! estimator.set_process_noise(1e-5);
 //! estimator.set_measurement_noise(5e-4);
 //!
@@ -46,7 +46,7 @@ use libm;
 /// This estimator uses a 2nd-order RC equivalent circuit model with polynomial-based
 /// parameter estimation. The state vector consists of [SoC, V_RC1, V_RC2].
 #[derive(Debug, Clone)]
-pub struct SoCEstimator {
+pub struct Battery {
     // State vector [SoC, V_RC1, V_RC2]
     state: [f32; 3],
 
@@ -67,7 +67,7 @@ pub struct SoCEstimator {
     predicted_covariance: [[f32; 3]; 3],
 }
 
-impl Default for SoCEstimator {
+impl Default for Battery {
     /// Creates a SoC estimator with default parameters.
     ///
     /// Default values:
@@ -82,7 +82,7 @@ impl Default for SoCEstimator {
     }
 }
 
-impl SoCEstimator {
+impl Battery {
     /// Creates a new SoC estimator with specified parameters.
     ///
     /// # Parameters
@@ -94,14 +94,14 @@ impl SoCEstimator {
     /// # Examples
     ///
     /// ```rust
-    /// use libpower::battery::soc::SoCEstimator;
+    /// use libpower::battery::soc::Battery;
     ///
     /// // Create estimator for 50Ah battery with 1-second sampling
-    /// let estimator = SoCEstimator::new(0.8, 50.0 * 3600.0, 1.0);
+    /// let estimator = Battery::new(0.8, 50.0 * 3600.0, 1.0);
     /// assert!((estimator.get_soc() - 0.8).abs() < 1e-6);
     /// ```
     pub fn new(initial_soc: f32, nominal_capacity: f32, sampling_time: f32) -> Self {
-        let mut estimator = SoCEstimator {
+        let mut estimator = Battery {
             state: [initial_soc, 0.0, 0.0],
             error_covariance: [[0.1, 0.0, 0.0], [0.0, 0.1, 0.0], [0.0, 0.0, 0.1]],
             nominal_capacity,
@@ -192,9 +192,9 @@ impl SoCEstimator {
     /// # Examples
     ///
     /// ```rust
-    /// use libpower::battery::soc::SoCEstimator;
+    /// use libpower::battery::soc::Battery;
     ///
-    /// let mut estimator = SoCEstimator::new(0.9, 50.0 * 3600.0, 1.0);
+    /// let mut estimator = Battery::new(0.9, 50.0 * 3600.0, 1.0);
     ///
     /// // Discharge at 10A for multiple steps
     /// for _ in 0..10 {

@@ -3,12 +3,12 @@
 //! This module contains comprehensive tests for the Extended Kalman Filter-based
 //! State of Charge estimation algorithm.
 
-use libpower::battery::soc::SoCEstimator;
+use libpower::battery::soc::Battery;
 
 /// Test SoC estimator creation with default parameters
 #[test]
 fn test_soc_estimator_default() {
-    let estimator = SoCEstimator::default();
+    let estimator = Battery::default();
 
     assert!((estimator.get_soc() - 0.9).abs() < 1e-6);
     assert!((estimator.get_v_rc1()).abs() < 1e-6);
@@ -22,7 +22,7 @@ fn test_soc_estimator_new() {
     let capacity = 60.0 * 3600.0; // 60 Ah
     let sampling_time = 0.1; // 100 ms
 
-    let estimator = SoCEstimator::new(initial_soc, capacity, sampling_time);
+    let estimator = Battery::new(initial_soc, capacity, sampling_time);
 
     assert!((estimator.get_soc() - initial_soc).abs() < 1e-6);
     assert!((estimator.get_v_rc1()).abs() < 1e-6);
@@ -33,18 +33,18 @@ fn test_soc_estimator_new() {
 #[test]
 fn test_soc_clamping() {
     // Test above range
-    let estimator1 = SoCEstimator::new(1.5, 50.0 * 3600.0, 1.0);
+    let estimator1 = Battery::new(1.5, 50.0 * 3600.0, 1.0);
     assert_eq!(estimator1.get_soc(), 1.0);
 
     // Test below range
-    let estimator2 = SoCEstimator::new(-0.5, 50.0 * 3600.0, 1.0);
+    let estimator2 = Battery::new(-0.5, 50.0 * 3600.0, 1.0);
     assert_eq!(estimator2.get_soc(), 0.0);
 }
 
 /// Test noise parameter setting
 #[test]
 fn test_noise_parameters() {
-    let mut estimator = SoCEstimator::new(0.8, 50.0 * 3600.0, 1.0);
+    let mut estimator = Battery::new(0.8, 50.0 * 3600.0, 1.0);
 
     estimator.set_process_noise(1e-4);
     estimator.set_measurement_noise(1e-3);
@@ -57,7 +57,7 @@ fn test_noise_parameters() {
 /// Test coulombic efficiency setting
 #[test]
 fn test_coulombic_efficiency() {
-    let mut estimator = SoCEstimator::new(0.8, 50.0 * 3600.0, 1.0);
+    let mut estimator = Battery::new(0.8, 50.0 * 3600.0, 1.0);
 
     // Test valid range
     estimator.set_coulombic_efficiency(0.95);
@@ -75,7 +75,7 @@ fn test_coulombic_efficiency() {
 /// Test polynomial parameter calculations
 #[test]
 fn test_battery_parameter_calculations() {
-    let estimator = SoCEstimator::new(0.5, 50.0 * 3600.0, 1.0);
+    let estimator = Battery::new(0.5, 50.0 * 3600.0, 1.0);
 
     // Test internal resistance calculation at 50% SoC
     let r_int = estimator.calculate_internal_resistance(0.5);
@@ -104,7 +104,7 @@ fn test_battery_parameter_calculations() {
 /// Test parameter variations across SoC range
 #[test]
 fn test_parameter_soc_dependency() {
-    let estimator = SoCEstimator::new(0.5, 50.0 * 3600.0, 1.0);
+    let estimator = Battery::new(0.5, 50.0 * 3600.0, 1.0);
 
     let soc_values = [0.1, 0.3, 0.5, 0.7, 0.9];
     let mut r_int_values = Vec::new();
@@ -135,7 +135,7 @@ fn test_parameter_soc_dependency() {
 /// Test reset functionality
 #[test]
 fn test_reset() {
-    let mut estimator = SoCEstimator::new(0.8, 50.0 * 3600.0, 1.0);
+    let mut estimator = Battery::new(0.8, 50.0 * 3600.0, 1.0);
 
     // Update estimator to accumulate some state
     for _ in 0..10 {
@@ -157,7 +157,7 @@ fn test_reset() {
 /// Test single update step
 #[test]
 fn test_single_update() {
-    let mut estimator = SoCEstimator::new(0.8, 50.0 * 3600.0, 1.0);
+    let mut estimator = Battery::new(0.8, 50.0 * 3600.0, 1.0);
 
     let initial_soc = estimator.get_soc();
 
@@ -187,7 +187,7 @@ fn test_single_update() {
 /// Test charge behavior
 #[test]
 fn test_charge_behavior() {
-    let mut estimator = SoCEstimator::new(0.5, 50.0 * 3600.0, 1.0);
+    let mut estimator = Battery::new(0.5, 50.0 * 3600.0, 1.0);
 
     let initial_soc = estimator.get_soc();
 
@@ -211,7 +211,7 @@ fn test_charge_behavior() {
 /// Test discharge cycle simulation
 #[test]
 fn test_discharge_cycle() {
-    let mut estimator = SoCEstimator::new(1.0, 50.0 * 3600.0, 1.0);
+    let mut estimator = Battery::new(1.0, 50.0 * 3600.0, 1.0);
 
     let discharge_current = -20.0; // 20A discharge
     let mut voltages = Vec::new();
@@ -249,7 +249,7 @@ fn test_discharge_cycle() {
 /// Test uncertainty tracking
 #[test]
 fn test_uncertainty_tracking() {
-    let mut estimator = SoCEstimator::new(0.8, 50.0 * 3600.0, 1.0);
+    let mut estimator = Battery::new(0.8, 50.0 * 3600.0, 1.0);
 
     let initial_uncertainty = estimator.get_soc_uncertainty();
     assert!(
@@ -276,7 +276,7 @@ fn test_uncertainty_tracking() {
 /// Test extreme current conditions
 #[test]
 fn test_extreme_current_conditions() {
-    let mut estimator = SoCEstimator::new(0.5, 50.0 * 3600.0, 1.0);
+    let mut estimator = Battery::new(0.5, 50.0 * 3600.0, 1.0);
 
     // Test high discharge current
     let soc1 = estimator.update(-100.0, 2.8);
@@ -303,7 +303,7 @@ fn test_extreme_current_conditions() {
 /// Test voltage measurement variations
 #[test]
 fn test_voltage_measurement_variations() {
-    let mut estimator = SoCEstimator::new(0.5, 50.0 * 3600.0, 1.0);
+    let mut estimator = Battery::new(0.5, 50.0 * 3600.0, 1.0);
 
     let current = -10.0;
 
@@ -326,7 +326,7 @@ fn test_voltage_measurement_variations() {
 /// Test EKF convergence behavior
 #[test]
 fn test_ekf_convergence() {
-    let mut estimator = SoCEstimator::new(0.8, 50.0 * 3600.0, 1.0);
+    let mut estimator = Battery::new(0.8, 50.0 * 3600.0, 1.0);
 
     // Set known conditions
     let current = -10.0;
@@ -357,10 +357,10 @@ fn test_ekf_convergence() {
 /// Test numerical stability
 #[test]
 fn test_numerical_stability() {
-    let mut estimator = SoCEstimator::new(0.5, 50.0 * 3600.0, 1.0);
+    let mut estimator = Battery::new(0.5, 50.0 * 3600.0, 1.0);
 
     // Test with very small sampling time
-    let mut estimator2 = SoCEstimator::new(0.5, 50.0 * 3600.0, 0.001);
+    let mut estimator2 = Battery::new(0.5, 50.0 * 3600.0, 0.001);
 
     for _ in 0..100 {
         let soc = estimator2.update(-1.0, 3.3);
@@ -369,7 +369,7 @@ fn test_numerical_stability() {
     }
 
     // Test with very large capacity
-    let mut estimator3 = SoCEstimator::new(0.5, 1000.0 * 3600.0, 1.0);
+    let mut estimator3 = Battery::new(0.5, 1000.0 * 3600.0, 1.0);
 
     for _ in 0..10 {
         let soc = estimator3.update(-100.0, 3.3);
@@ -382,12 +382,12 @@ fn test_numerical_stability() {
 #[test]
 fn test_boundary_soc_values() {
     // Test at 0% SoC
-    let mut estimator1 = SoCEstimator::new(0.0, 50.0 * 3600.0, 1.0);
+    let mut estimator1 = Battery::new(0.0, 50.0 * 3600.0, 1.0);
     let soc1 = estimator1.update(-10.0, 2.8);
     assert!(soc1 >= 0.0, "SoC should not go below 0%");
 
     // Test at 100% SoC
-    let mut estimator2 = SoCEstimator::new(1.0, 50.0 * 3600.0, 1.0);
+    let mut estimator2 = Battery::new(1.0, 50.0 * 3600.0, 1.0);
     let soc2 = estimator2.update(10.0, 4.3);
     assert!(soc2 <= 1.0, "SoC should not go above 100%");
 
@@ -411,7 +411,7 @@ fn test_boundary_soc_values() {
 /// Integration test: Complete charge-discharge cycle
 #[test]
 fn test_complete_cycle() {
-    let mut estimator = SoCEstimator::new(0.5, 50.0 * 3600.0, 1.0);
+    let mut estimator = Battery::new(0.5, 50.0 * 3600.0, 1.0);
 
     let mut soc_values = Vec::new();
 
