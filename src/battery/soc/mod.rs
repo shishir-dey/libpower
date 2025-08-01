@@ -27,9 +27,18 @@
 //! ```rust
 //! use libpower::battery::soc::Battery;
 //!
+//! // Create estimator with default battery parameters (Li-Ion NMC 18650 3.7V 2200mAh 2C)
 //! let mut estimator = Battery::new(0.9, 50.0 * 3600.0, 1.0);
 //! estimator.set_process_noise(1e-5);
 //! estimator.set_measurement_noise(5e-4);
+//!
+//! // Or create with specific battery type
+//! let mut nmc_18650_3_7v_2500mah_2c_estimator = Battery::with_battery_type(
+//!     0.9,
+//!     50.0 * 3600.0,
+//!     1.0,
+//!     "NMC_18650_3.7V_2500mAh_2C"
+//! ).unwrap();
 //!
 //! // In your control loop
 //! let current = -10.0; // 10A discharge
@@ -37,9 +46,58 @@
 //!
 //! let estimated_soc = estimator.update(current, terminal_voltage);
 //! println!("Estimated SoC: {:.1}%", estimated_soc * 100.0);
+//!
+//! // Get battery information
+//! let battery_info = estimator.get_battery_info();
+//! println!("Battery: {} {} {}",
+//!          battery_info.manufacturer,
+//!          battery_info.chemistry,
+//!          battery_info.form_factor);
 //! ```
+//!
+//! ## Adding New Battery Types
+//!
+//! To add support for a new battery type:
+//! 1. Create a new TOML file in `src/battery/soc/params/` with your battery parameters
+//! 2. Add a new match case in `BatteryParameters::load_battery_type()`
+//! 3. The TOML file should contain sections for:
+//!    - `[battery_info]` - Battery metadata
+//!    - `[internal_resistance]` - Internal resistance polynomial coefficients
+//!    - `[rc_resistance]` - RC circuit resistance coefficients  
+//!    - `[rc_capacitance]` - RC circuit capacitance coefficients
+//!    - `[open_circuit_voltage]` - Open circuit voltage coefficients
 
 use libm;
+use serde::{Deserialize, Serialize};
+
+extern crate alloc;
+use alloc::string::String;
+
+/// Battery information and metadata
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct BatteryInfo {
+    pub manufacturer: String,
+    pub chemistry: String,
+    pub form_factor: String,
+    pub nominal_voltage: f32,  // V
+    pub nominal_capacity: f32, // mAh
+}
+
+/// Polynomial coefficients for battery parameter calculations
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct PolynomialCoefficients {
+    pub coefficients: [f32; 8], // a0 to a7
+}
+
+/// Complete battery parameter set loaded from TOML
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct BatteryParameters {
+    pub battery_info: BatteryInfo,
+    pub internal_resistance: PolynomialCoefficients,
+    pub rc_resistance: PolynomialCoefficients,
+    pub rc_capacitance: PolynomialCoefficients,
+    pub open_circuit_voltage: PolynomialCoefficients,
+}
 
 /// Extended Kalman Filter-based State of Charge estimator for lithium-ion batteries.
 ///
@@ -65,6 +123,59 @@ pub struct Battery {
     // Internal variables for calculations
     predicted_state: [f32; 3],
     predicted_covariance: [[f32; 3]; 3],
+
+    // Battery-specific parameters loaded from TOML
+    battery_parameters: BatteryParameters,
+}
+
+impl BatteryParameters {
+    /// Load battery parameters from a TOML string
+    pub fn from_toml_str(toml_str: &str) -> Result<Self, &'static str> {
+        toml::from_str(toml_str).map_err(|_| "Failed to parse TOML")
+    }
+
+    /// Load battery parameters from embedded TOML data
+    pub fn load_default() -> Self {
+        const DEFAULT_TOML: &str = include_str!("params/NMC_18650_3.7V_2500mAh_2C.toml");
+        Self::from_toml_str(DEFAULT_TOML).expect("Default battery parameters should be valid")
+    }
+
+    /// Load a specific battery type by filename (without .toml extension)
+    pub fn load_battery_type(filename: &str) -> Result<Self, &'static str> {
+        match filename {
+            "NMC_18650_3.7V_2500mAh_2C" => {
+                const TOML_DATA: &str = include_str!("params/NMC_18650_3.7V_2500mAh_2C.toml");
+                Self::from_toml_str(TOML_DATA)
+            }
+            _ => Err("Battery type not found"),
+        }
+    }
+}
+
+/// Helper function to evaluate polynomial: a0 + a1*x + a2*x^2 + ... + a7*x^7
+fn evaluate_polynomial(coefficients: &[f32; 8], x: f32) -> f32 {
+    let mut result = coefficients[0];
+    let mut x_power = x;
+
+    for i in 1..8 {
+        result += coefficients[i] * x_power;
+        x_power *= x;
+    }
+
+    result
+}
+
+/// Helper function to evaluate polynomial derivative: a1 + 2*a2*x + 3*a3*x^2 + ... + 7*a7*x^6
+fn evaluate_polynomial_derivative(coefficients: &[f32; 8], x: f32) -> f32 {
+    let mut result = coefficients[1];
+    let mut x_power = 1.0;
+
+    for i in 2..8 {
+        result += (i as f32) * coefficients[i] * x_power;
+        x_power *= x;
+    }
+
+    result
 }
 
 impl Default for Battery {
@@ -77,13 +188,14 @@ impl Default for Battery {
     /// - Coulombic efficiency = 0.98
     /// - Process noise = 1e-5
     /// - Measurement noise = 5e-4
+    /// - Uses default battery parameters (Li-Ion NMC 18650 3.7V 2200mAh 2C)
     fn default() -> Self {
         Self::new(0.9, 50.0 * 3600.0, 1.0) // 50 Ah in As
     }
 }
 
 impl Battery {
-    /// Creates a new SoC estimator with specified parameters.
+    /// Creates a new SoC estimator with specified parameters using default battery.
     ///
     /// # Parameters
     ///
@@ -101,6 +213,45 @@ impl Battery {
     /// assert!((estimator.get_soc() - 0.8).abs() < 1e-6);
     /// ```
     pub fn new(initial_soc: f32, nominal_capacity: f32, sampling_time: f32) -> Self {
+        Self::with_battery_type(
+            initial_soc,
+            nominal_capacity,
+            sampling_time,
+            "NMC_18650_3.7V_2500mAh_2C",
+        )
+        .expect("Default battery parameters should be valid")
+    }
+
+    /// Creates a new SoC estimator with specified battery type.
+    ///
+    /// # Parameters
+    ///
+    /// * `initial_soc` - Initial State of Charge (0.0 to 1.0)
+    /// * `nominal_capacity` - Battery nominal capacity in Ampere-seconds (As)
+    /// * `sampling_time` - Sampling period in seconds
+    /// * `battery_type` - Battery type identifier (filename without .toml extension)
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use libpower::battery::soc::Battery;
+    ///
+    /// // Create estimator with specific battery type
+    /// let estimator = Battery::with_battery_type(
+    ///     0.8,
+    ///     50.0 * 3600.0,
+    ///     1.0,
+    ///     "NMC_18650_3.7V_2200mAh_2C"
+    /// ).unwrap();
+    /// ```
+    pub fn with_battery_type(
+        initial_soc: f32,
+        nominal_capacity: f32,
+        sampling_time: f32,
+        battery_type: &str,
+    ) -> Result<Self, &'static str> {
+        let battery_parameters = BatteryParameters::load_battery_type(battery_type)?;
+
         let mut estimator = Battery {
             state: [initial_soc, 0.0, 0.0],
             error_covariance: [[0.1, 0.0, 0.0], [0.0, 0.1, 0.0], [0.0, 0.0, 0.1]],
@@ -111,11 +262,12 @@ impl Battery {
             measurement_noise: 5e-4,
             predicted_state: [0.0; 3],
             predicted_covariance: [[0.0; 3]; 3],
+            battery_parameters,
         };
 
         // Ensure SoC is within valid range
         estimator.state[0] = estimator.state[0].clamp(0.0, 1.0);
-        estimator
+        Ok(estimator)
     }
 
     /// Sets the process noise parameter (Q).
@@ -170,6 +322,15 @@ impl Battery {
     /// Voltage in volts
     pub fn get_v_rc2(&self) -> f32 {
         self.state[2]
+    }
+
+    /// Gets the battery information and metadata.
+    ///
+    /// # Returns
+    ///
+    /// Reference to the battery information
+    pub fn get_battery_info(&self) -> &BatteryInfo {
+        &self.battery_parameters.battery_info
     }
 
     /// Updates the SoC estimate using Extended Kalman Filter.
@@ -338,71 +499,39 @@ impl Battery {
         }
     }
 
-    /// Calculates internal resistance as a function of SoC.
+    /// Calculates internal resistance as a function of SoC using loaded coefficients.
     pub fn calculate_internal_resistance(&self, soc: f32) -> f32 {
-        let s = soc;
-        let s2 = s * s;
-        let s3 = s2 * s;
-        let s4 = s3 * s;
-        let s5 = s4 * s;
-        let s6 = s5 * s;
-        let s7 = s6 * s;
-        0.00573 - 0.03427 * s + 0.1455 * s2 - 0.32647 * s3 + 0.41465 * s4 - 0.28992 * s5
-            + 0.09353 * s6
-            - 0.00634 * s7
+        evaluate_polynomial(
+            &self.battery_parameters.internal_resistance.coefficients,
+            soc,
+        )
     }
 
-    /// Calculates RC circuit parameters as a function of SoC.
+    /// Calculates RC circuit parameters as a function of SoC using loaded coefficients.
     pub fn calculate_rc_parameters(&self, soc: f32) -> (f32, f32, f32, f32) {
-        let s = soc;
-        let s2 = s * s;
-        let s3 = s2 * s;
-        let s4 = s3 * s;
-        let s5 = s4 * s;
-        let s6 = s5 * s;
-        let s7 = s6 * s;
+        // Both R1 and R2 use the same polynomial
+        let r = evaluate_polynomial(&self.battery_parameters.rc_resistance.coefficients, soc);
 
-        // R1 and R2 (same polynomial)
-        let r = 0.01513 - 0.18008 * s + 1.05147 * s2 - 3.27616 * s3 + 5.79793 * s4 - 5.81819 * s5
-            + 3.08032 * s6
-            - 0.66827 * s7;
-
-        // C1 and C2 (same polynomial)
-        let c = 47718.90713 - 1.00583e6 * s + 9.2653e6 * s2 - 3.91088e7 * s3 + 8.85892e7 * s4
-            - 1.11014e8 * s5
-            + 7.22811e7 * s6
-            - 1.90336e7 * s7;
+        // Both C1 and C2 use the same polynomial
+        let c = evaluate_polynomial(&self.battery_parameters.rc_capacitance.coefficients, soc);
 
         (r, c, r, c)
     }
 
-    /// Calculates open circuit voltage as a function of SoC.
+    /// Calculates open circuit voltage as a function of SoC using loaded coefficients.
     pub fn calculate_open_circuit_voltage(&self, soc: f32) -> f32 {
-        let s = soc;
-        let s2 = s * s;
-        let s3 = s2 * s;
-        let s4 = s3 * s;
-        let s5 = s4 * s;
-        let s6 = s5 * s;
-        let s7 = s6 * s;
-        -23.60229 * s7 + 141.34077 * s6 - 314.92282 * s5 + 345.34531 * s4 - 200.15462 * s3
-            + 60.21383 * s2
-            - 7.88447 * s
-            + 3.2377
+        evaluate_polynomial(
+            &self.battery_parameters.open_circuit_voltage.coefficients,
+            soc,
+        )
     }
 
-    /// Calculates the derivative of open circuit voltage with respect to SoC.
+    /// Calculates the derivative of open circuit voltage with respect to SoC using loaded coefficients.
     pub fn calculate_uocv_derivative(&self, soc: f32) -> f32 {
-        let s = soc;
-        let s2 = s * s;
-        let s3 = s2 * s;
-        let s4 = s3 * s;
-        let s5 = s4 * s;
-        let s6 = s5 * s;
-        -23.60229 * 7.0 * s6 + 141.34077 * 6.0 * s5 - 314.92282 * 5.0 * s4 + 345.34531 * 4.0 * s3
-            - 200.15462 * 3.0 * s2
-            + 60.21383 * 2.0 * s
-            - 7.88447
+        evaluate_polynomial_derivative(
+            &self.battery_parameters.open_circuit_voltage.coefficients,
+            soc,
+        )
     }
 
     /// Resets the estimator to initial conditions.

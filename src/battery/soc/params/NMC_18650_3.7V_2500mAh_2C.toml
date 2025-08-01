@@ -1,0 +1,69 @@
+# Battery parameters for Hongli Li-Ion NMC 18650 3.7V 2500mAh 2C
+# These coefficients are derived from HPPC (Hybrid Pulse Power Characterization) testing
+# Polynomials are expressed as: a0 + a1*SoC + a2*SoC^2 + ... + a7*SoC^7
+
+[battery_info]
+manufacturer = "Hongli"
+chemistry = "Li-Ion NMC"
+form_factor = "18650"
+nominal_voltage = 3.7  # V
+nominal_capacity = 2500  # mAh
+nominal_current = 2  # C
+
+[internal_resistance]
+# Internal resistance polynomial coefficients (Ohms)
+# R_int = a0 + a1*SoC + a2*SoC^2 + ... + a7*SoC^7
+coefficients = [
+    0.00573,    # a0
+    -0.03427,   # a1
+    0.1455,     # a2
+    -0.32647,   # a3
+    0.41465,    # a4
+    -0.28992,   # a5
+    0.09353,    # a6
+    -0.00634    # a7
+]
+
+[rc_resistance]
+# RC circuit resistance polynomial coefficients (Ohms)
+# Both R1 and R2 use the same polynomial
+# R = a0 + a1*SoC + a2*SoC^2 + ... + a7*SoC^7
+coefficients = [
+    0.01513,    # a0
+    -0.18008,   # a1
+    1.05147,    # a2
+    -3.27616,   # a3
+    5.79793,    # a4
+    -5.81819,   # a5
+    3.08032,    # a6
+    -0.66827    # a7
+]
+
+[rc_capacitance]
+# RC circuit capacitance polynomial coefficients (Farads)
+# Both C1 and C2 use the same polynomial
+# C = a0 + a1*SoC + a2*SoC^2 + ... + a7*SoC^7
+coefficients = [
+    47718.90713,     # a0
+    -1.00583e6,      # a1
+    9.2653e6,        # a2
+    -3.91088e7,      # a3
+    8.85892e7,       # a4
+    -1.11014e8,      # a5
+    7.22811e7,       # a6
+    -1.90336e7       # a7
+]
+
+[open_circuit_voltage]
+# Open circuit voltage polynomial coefficients (Volts)
+# OCV = a0 + a1*SoC + a2*SoC^2 + ... + a7*SoC^7
+coefficients = [
+    3.2377,        # a0
+    -7.88447,      # a1
+    60.21383,      # a2
+    -200.15462,    # a3
+    345.34531,     # a4
+    -314.92282,    # a5
+    141.34077,     # a6
+    -23.60229      # a7
+]
