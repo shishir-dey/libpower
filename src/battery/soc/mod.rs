@@ -241,7 +241,7 @@ impl Battery {
     ///     0.8,
     ///     50.0 * 3600.0,
     ///     1.0,
-    ///     "NMC_18650_3.7V_2200mAh_2C"
+    ///     "NMC_18650_3.7V_2500mAh_2C"
     /// ).unwrap();
     /// ```
     pub fn with_battery_type(
