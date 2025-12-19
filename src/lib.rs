@@ -132,4 +132,5 @@ pub mod motor_control;
 pub mod mppt;
 pub mod pll;
 pub mod signal;
+pub mod system;
 pub mod transform;
