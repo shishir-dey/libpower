@@ -4,8 +4,9 @@
 /// along with a default mock implementation and a microcontroller-specific implementation.
 
 /// Buzzer modes.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub enum BuzzerMode {
+    #[default]
     Off,
     On,
     FastBeep,
