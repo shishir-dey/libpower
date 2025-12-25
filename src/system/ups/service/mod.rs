@@ -11,7 +11,9 @@ pub trait Service {
     fn update(&mut self);
 }
 
+pub mod battery_monitoring;
 pub mod energy_metering;
-pub mod overtemperature_protection;
+pub mod temperature_monitoring;
+pub use battery_monitoring::*;
 pub use energy_metering::*;
-pub use overtemperature_protection::*;
+pub use temperature_monitoring::*;

@@ -3,11 +3,11 @@ use crate::system::ups::physical::temperature::TemperatureSensor;
 
 use super::Service;
 
-/// Overtemperature protection service that monitors temperature sensors and controls a fan.
+/// Temperature monitoring service that monitors temperature sensors and controls a fan.
 ///
 /// The service turns the fan on when the maximum temperature exceeds the threshold,
 /// and turns it off when the temperature falls below the threshold minus hysteresis.
-pub struct OvertemperatureProtectionService<T1, T2, F>
+pub struct TemperatureMonitoringService<T1, T2, F>
 where
     T1: TemperatureSensor,
     T2: TemperatureSensor,
@@ -20,13 +20,13 @@ where
     hysteresis: f32,
 }
 
-impl<T1, T2, F> OvertemperatureProtectionService<T1, T2, F>
+impl<T1, T2, F> TemperatureMonitoringService<T1, T2, F>
 where
     T1: TemperatureSensor,
     T2: TemperatureSensor,
     F: Fan,
 {
-    /// Create a new overtemperature protection service.
+    /// Create a new temperature monitoring service.
     ///
     /// # Arguments
     ///
@@ -45,7 +45,7 @@ where
         }
     }
 
-    /// Update the overtemperature protection logic.
+    /// Update the temperature monitoring logic.
     ///
     /// Checks the maximum temperature from both sensors and controls the fan accordingly.
     pub fn update(&mut self) {
@@ -64,7 +64,7 @@ where
     }
 }
 
-impl<T1, T2, F> Service for OvertemperatureProtectionService<T1, T2, F>
+impl<T1, T2, F> Service for TemperatureMonitoringService<T1, T2, F>
 where
     T1: TemperatureSensor,
     T2: TemperatureSensor,

@@ -29,4 +29,9 @@ pub trait Event {
 
     /// Clear an event without consuming payload.
     fn clear(&mut self, id: Self::Id);
+
+    /// Set hysteresis delay for an event (in milliseconds).
+    ///
+    /// The event will only be raised after the delay has passed since the condition was met.
+    fn set_hysteresis(&mut self, id: Self::Id, delay_ms: u32);
 }
