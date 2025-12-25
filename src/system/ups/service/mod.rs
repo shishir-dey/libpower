@@ -11,5 +11,7 @@ pub trait Service {
     fn update(&mut self);
 }
 
+pub mod energy_metering;
 pub mod overtemperature_protection;
+pub use energy_metering::*;
 pub use overtemperature_protection::*;
