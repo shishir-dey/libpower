@@ -1,5 +1,5 @@
-use crate::system::ups::physical::fan::Fan;
-use crate::system::ups::physical::temperature::TemperatureSensor;
+use crate::system::ups::off_grid::physical::fan::Fan;
+use crate::system::ups::off_grid::physical::temperature::TemperatureSensor;
 
 use super::Service;
 

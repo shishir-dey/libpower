@@ -1,5 +1,5 @@
-use crate::system::ups::infra::event::Event;
-use crate::system::ups::service::{BatteryEvent, Service};
+use crate::system::ups::off_grid::infra::event::Event;
+use crate::system::ups::off_grid::service::{BatteryEvent, Service};
 
 /// States for the UPS system.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
