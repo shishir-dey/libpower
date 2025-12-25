@@ -5,6 +5,7 @@
 /// system from the assembly code, supporting various messages and conditions.
 
 /// Display message types based on the assembly LCD_DISPLAY functions.
+/// For 20x4 LCD display.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum DisplayMessage {
     /// LCD check (all pixels on)
@@ -73,18 +74,26 @@ pub enum DisplayMessage {
     HighTemperatureShutdown,
 }
 
-/// Trait for display control operations with two text buffers.
+/// Trait for display control operations with four text buffers for 20x4 LCD.
 pub trait Display {
     /// Set the display message.
     fn set_message(&mut self, message: DisplayMessage);
 
     /// Set the text for line 1 (first buffer).
-    /// Text will be truncated to 16 characters.
+    /// Text will be truncated to 20 characters.
     fn set_line1(&mut self, text: &str);
 
     /// Set the text for line 2 (second buffer).
-    /// Text will be truncated to 16 characters.
+    /// Text will be truncated to 20 characters.
     fn set_line2(&mut self, text: &str);
+
+    /// Set the text for line 3 (third buffer).
+    /// Text will be truncated to 20 characters.
+    fn set_line3(&mut self, text: &str);
+
+    /// Set the text for line 4 (fourth buffer).
+    /// Text will be truncated to 20 characters.
+    fn set_line4(&mut self, text: &str);
 
     /// Get the current text for line 1.
     fn get_line1(&self) -> &str;
@@ -92,169 +101,308 @@ pub trait Display {
     /// Get the current text for line 2.
     fn get_line2(&self) -> &str;
 
-    /// Clear both lines.
+    /// Get the current text for line 3.
+    fn get_line3(&self) -> &str;
+
+    /// Get the current text for line 4.
+    fn get_line4(&self) -> &str;
+
+    /// Clear all lines.
     fn clear(&mut self) {
         self.set_line1("");
         self.set_line2("");
+        self.set_line3("");
+        self.set_line4("");
     }
 }
 
 /// Mock implementation of the Display trait for testing and default behavior.
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone)]
 pub struct DisplayMock {
-    line1: String,
-    line2: String,
+    line1: [u8; 20],
+    line2: [u8; 20],
+    line3: [u8; 20],
+    line4: [u8; 20],
+}
+
+impl Default for DisplayMock {
+    fn default() -> Self {
+        Self {
+            line1: [b' '; 20],
+            line2: [b' '; 20],
+            line3: [b' '; 20],
+            line4: [b' '; 20],
+        }
+    }
 }
 
 impl Display for DisplayMock {
     fn set_message(&mut self, message: DisplayMessage) {
-        let (line1, line2) = match message {
+        let (l1_bytes, l2_bytes, l3_bytes, l4_bytes): (&[u8], &[u8], &[u8], &[u8]) = match message {
             DisplayMessage::LcdCheck => (
-                "                ".to_string(),
-                "                ".to_string(),
+                b"                    ",
+                b"                    ",
+                b"                    ",
+                b"                    ",
             ), // All spaces for mock
             DisplayMessage::DspSine => (
-                "DSP Sine Wave   ".to_string(),
-                "Inverter        ".to_string(),
+                b"DSP Sine Wave       ",
+                b"Inverter            ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::SystemCapacity => (
-                "System Capacity ".to_string(),
-                "                ".to_string(),
+                b"System Capacity     ",
+                b"                    ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::SelfTest => (
-                "Self Test In    ".to_string(),
-                "Progress...     ".to_string(),
+                b"Self Test In        ",
+                b"Progress...         ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::LcdSelfTest => (
-                "LCD Self Test   ".to_string(),
-                "                ".to_string(),
+                b"LCD Self Test       ",
+                b"                    ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::BuzzerTest => (
-                "Buzzer Test     ".to_string(),
-                "                ".to_string(),
+                b"Buzzer Test         ",
+                b"                    ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::BatteryVoltageOpCurrent => (
-                "Battery V O/P C ".to_string(),
-                "                ".to_string(),
+                b"Battery V O/P C     ",
+                b"                    ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::ChargingCurrentSetting => (
-                "Charging Current".to_string(),
-                "Setting A       ".to_string(),
+                b"Charging Current    ",
+                b"Setting A           ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::MainsPresent => (
-                "Mains Present   ".to_string(),
-                "Battery Charging".to_string(),
+                b"Mains Present       ",
+                b"Battery Charging    ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::InputVoltFreq => (
-                "I/P Volt I/P Freq".to_string(),
-                "                ".to_string(),
+                b"I/P Volt I/P Freq   ",
+                b"                    ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::BatteryCharging => (
-                "                ".to_string(),
-                "Battery Charging".to_string(),
+                b"                    ",
+                b"Battery Charging    ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::MainsFailInvSwitchOff => (
-                "Mains Fail      ".to_string(),
-                "Inverter Switch ".to_string(),
+                b"Mains Fail          ",
+                b"Inverter Switch     ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::MainsFailSwitchOnInv => (
-                "Mains Fail      ".to_string(),
-                "Switch On Inverter".to_string(),
+                b"Mains Fail          ",
+                b"Switch On Inverter  ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::MainsFailInvOn => (
-                "Mains Fail      ".to_string(),
-                "Inverter On     ".to_string(),
+                b"Mains Fail          ",
+                b"Inverter On         ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::OutputLoad => (
-                "O/P Load        ".to_string(),
-                "                ".to_string(),
+                b"O/P Load            ",
+                b"                    ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::AttentionBatteryLow => (
-                "** Attention ** ".to_string(),
-                "Battery Low     ".to_string(),
+                b"** Attention **     ",
+                b"Battery Low         ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::RemedyBatteryLow => (
-                "** Remedy **    ".to_string(),
-                "Reduce Load Or  ".to_string(),
+                b"** Remedy **        ",
+                b"Reduce Load Or      ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::Remedy2BatteryLow => (
-                "** Remedy **    ".to_string(),
-                "Shutdown Inverter".to_string(),
+                b"** Remedy **        ",
+                b"Shutdown Inverter   ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::ProtectionShort => (
-                "** Protection **".to_string(),
-                "Short Ckt/Ovload".to_string(),
+                b"** Protection **    ",
+                b"Short Ckt/Ovload    ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::RemedyCheckWiring => (
-                "** Remedy **    ".to_string(),
-                "Check Wiring    ".to_string(),
+                b"** Remedy **        ",
+                b"Check Wiring        ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::BatteryVoltage => (
-                "Battery Voltage ".to_string(),
-                "                ".to_string(),
+                b"Battery Voltage     ",
+                b"                    ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::OutputVoltFreq => (
-                "O/P Volt O/P Freq".to_string(),
-                "                ".to_string(),
+                b"O/P Volt O/P Freq   ",
+                b"                    ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::AttentionOverload => (
-                "** Attention ** ".to_string(),
-                "Overload > 100% ".to_string(),
+                b"** Attention **     ",
+                b"Overload > 100%     ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::ProtectionLowBattShutdown => (
-                "** Protection **".to_string(),
-                "Battery Low     ".to_string(),
+                b"** Protection **    ",
+                b"Battery Low         ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::ProtectionOverloadShutdown => (
-                "** Protection **".to_string(),
-                "Overload Shutdown".to_string(),
+                b"** Protection **    ",
+                b"Overload Shutdown   ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::RemedyReduceLoad => (
-                "** Remedy **    ".to_string(),
-                "Reduce Some Load".to_string(),
+                b"** Remedy **        ",
+                b"Reduce Some Load    ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::InverterOn => (
-                "Mains Fail      ".to_string(),
-                "Inverter On     ".to_string(),
+                b"Mains Fail          ",
+                b"Inverter On         ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::MainsFailInvOff => (
-                "Mains Fail      ".to_string(),
-                "Inverter Off    ".to_string(),
+                b"Mains Fail          ",
+                b"Inverter Off        ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::BatteryHighCut => (
-                "** Protection **".to_string(),
-                "Battery High Cut".to_string(),
+                b"** Protection **    ",
+                b"Battery High Cut    ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::McbTrip => (
-                "** Protection **".to_string(),
-                "Mains MCB Trip  ".to_string(),
+                b"** Protection **    ",
+                b"Mains MCB Trip      ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::HighTemperature => (
-                "** Attention ** ".to_string(),
-                "High Temperature".to_string(),
+                b"** Attention **     ",
+                b"High Temperature    ",
+                b"                    ",
+                b"                    ",
             ),
             DisplayMessage::HighTemperatureShutdown => (
-                "High Temperature".to_string(),
-                "Shutdown        ".to_string(),
+                b"High Temperature    ",
+                b"Shutdown            ",
+                b"                    ",
+                b"                    ",
             ),
         };
-        self.line1 = format!("{:<16}", line1).chars().take(16).collect();
-        self.line2 = format!("{:<16}", line2).chars().take(16).collect();
+        let l1_len = l1_bytes.len().min(20);
+        self.line1[..l1_len].copy_from_slice(&l1_bytes[..l1_len]);
+        for i in l1_len..20 {
+            self.line1[i] = b' ';
+        }
+        let l2_len = l2_bytes.len().min(20);
+        self.line2[..l2_len].copy_from_slice(&l2_bytes[..l2_len]);
+        for i in l2_len..20 {
+            self.line2[i] = b' ';
+        }
+        let l3_len = l3_bytes.len().min(20);
+        self.line3[..l3_len].copy_from_slice(&l3_bytes[..l3_len]);
+        for i in l3_len..20 {
+            self.line3[i] = b' ';
+        }
+        let l4_len = l4_bytes.len().min(20);
+        self.line4[..l4_len].copy_from_slice(&l4_bytes[..l4_len]);
+        for i in l4_len..20 {
+            self.line4[i] = b' ';
+        }
     }
 
     fn set_line1(&mut self, text: &str) {
-        self.line1 = text.chars().take(16).collect();
+        let bytes = text.as_bytes();
+        let len = bytes.len().min(20);
+        self.line1[..len].copy_from_slice(&bytes[..len]);
+        for i in len..20 {
+            self.line1[i] = b' ';
+        }
     }
 
     fn set_line2(&mut self, text: &str) {
-        self.line2 = text.chars().take(16).collect();
+        let bytes = text.as_bytes();
+        let len = bytes.len().min(20);
+        self.line2[..len].copy_from_slice(&bytes[..len]);
+        for i in len..20 {
+            self.line2[i] = b' ';
+        }
+    }
+
+    fn set_line3(&mut self, text: &str) {
+        let bytes = text.as_bytes();
+        let len = bytes.len().min(20);
+        self.line3[..len].copy_from_slice(&bytes[..len]);
+        for i in len..20 {
+            self.line3[i] = b' ';
+        }
+    }
+
+    fn set_line4(&mut self, text: &str) {
+        let bytes = text.as_bytes();
+        let len = bytes.len().min(20);
+        self.line4[..len].copy_from_slice(&bytes[..len]);
+        for i in len..20 {
+            self.line4[i] = b' ';
+        }
     }
 
     fn get_line1(&self) -> &str {
-        &self.line1
+        core::str::from_utf8(&self.line1).unwrap_or("")
     }
 
     fn get_line2(&self) -> &str {
-        &self.line2
+        core::str::from_utf8(&self.line2).unwrap_or("")
+    }
+
+    fn get_line3(&self) -> &str {
+        core::str::from_utf8(&self.line3).unwrap_or("")
+    }
+
+    fn get_line4(&self) -> &str {
+        core::str::from_utf8(&self.line4).unwrap_or("")
     }
 }
