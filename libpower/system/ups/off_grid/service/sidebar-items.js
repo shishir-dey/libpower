@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["battery_monitoring","energy_metering","temperature_monitoring"],"trait":["Service"]};

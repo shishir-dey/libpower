@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["infra","physical","power_interface","service"],"struct":["UPS"]};
