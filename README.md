@@ -69,6 +69,13 @@ src/
 ├── signal/                        # Signal processing utilities
 │   └── signal.rs                  # Signal utility functions
 │
+├── system/                        # System-level implementations
+│   ├── bms/                       # Battery Management System
+│   ├── ess/                       # Energy Storage System
+│   └── ups/                       # Uninterruptible Power Supply
+│       ├── off_grid/
+│       └── on_grid/
+│
 └── transform/                     # Power system transforms
     ├── abc_dq0.rs                 # ABC to DQ0 transformation
     ├── clarke.rs                  # Clarke transform
