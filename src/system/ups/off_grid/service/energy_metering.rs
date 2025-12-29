@@ -1,5 +1,5 @@
+use crate::system::ups::off_grid::UPS;
 use crate::system::ups::off_grid::physical::clock::Clock;
-use crate::system::ups::off_grid::{PowerInterface, UPS};
 
 /// Energy metering service for calculating energy consumption.
 pub struct EnergyMetering<'a, C: Clock> {
