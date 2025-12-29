@@ -16,3 +16,4 @@ categories = ["embedded", "hardware-support", "science", "algorithms", "no-std"]
 libm = "0.2"
 serde = { version = "1.0", default-features = false, features = ["derive", "alloc"] }
 toml = { version = "0.9", default-features = false, features = ["parse", "serde"] }
+heapless = "0.8"

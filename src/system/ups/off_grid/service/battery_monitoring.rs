@@ -1,6 +1,6 @@
 use super::Service;
+use crate::system::ups::off_grid::UPS;
 use crate::system::ups::off_grid::infra::event::Event;
-use crate::system::ups::off_grid::{PowerInterface, UPS};
 
 /// Battery event types.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

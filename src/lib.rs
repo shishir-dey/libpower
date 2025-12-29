@@ -124,6 +124,8 @@
 
 #![no_std]
 
+extern crate alloc;
+
 pub mod battery;
 pub mod control;
 pub mod filter;
