@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["SerialMock"],"trait":["Serial"],"type":["Error","Result"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["BuzzerMode"],"struct":["BuzzerMock"],"trait":["Buzzer"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["FanMock"],"trait":["Fan"]};
