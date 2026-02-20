@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["Battery","BatteryInfo","BatteryParameters","PolynomialCoefficients"]};

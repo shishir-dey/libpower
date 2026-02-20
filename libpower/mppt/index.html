@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Maximum Power Point Tracking (MPPT) Algorithms"><title>libpower::mppt - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="libpower" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (7f99507f5 2026-02-19)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="../sidebar-items.js"></script><script defer src="../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc mod"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><rustdoc-topbar><h2><a href="#">Module mppt</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../libpower/index.html">libpower</a><span class="version">0.2.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Module mppt</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#maximum-power-point-tracking-mppt-algorithms" title="Maximum Power Point Tracking (MPPT) Algorithms">Maximum Power Point Tracking (MPPT) Algorithms</a><ul><li><a href="#theory" title="Theory">Theory</a></li><li><a href="#available-algorithms" title="Available Algorithms">Available Algorithms</a></li><li><a href="#algorithm-comparison" title="Algorithm Comparison">Algorithm Comparison</a></li><li><a href="#implementation-considerations" title="Implementation Considerations">Implementation Considerations</a></li><li><a href="#applications" title="Applications">Applications</a></li><li><a href="#example-usage" title="Example Usage">Example Usage</a></li></ul></li></ul><h3><a href="#modules">Module Items</a></h3><ul class="block"><li><a href="#modules" title="Modules">Modules</a></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="../index.html">In crate libpower</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">libpower</a></div><h1>Module <span>mppt</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/libpower/mppt/mod.rs.html#1-93">Source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="maximum-power-point-tracking-mppt-algorithms"><a class="doc-anchor" href="#maximum-power-point-tracking-mppt-algorithms">§</a>Maximum Power Point Tracking (MPPT) Algorithms</h2>
+<p>This module provides implementations of Maximum Power Point Tracking algorithms
+commonly used in photovoltaic (PV) systems and other renewable energy applications.
+MPPT algorithms optimize power extraction from variable sources like solar panels.</p>
+<h3 id="theory"><a class="doc-anchor" href="#theory">§</a>Theory</h3>
+<p>The maximum power point (MPP) of a photovoltaic array varies with:</p>
+<ul>
+<li><strong>Irradiance levels</strong>: Higher light intensity increases power output</li>
+<li><strong>Temperature</strong>: Higher temperatures generally reduce voltage and power</li>
+<li><strong>Partial shading</strong>: Can create multiple local maxima</li>
+<li><strong>Array degradation</strong>: Aging affects the characteristic curves</li>
+</ul>
+<h3 id="available-algorithms"><a class="doc-anchor" href="#available-algorithms">§</a>Available Algorithms</h3><h4 id="perturb-and-observe-po"><a class="doc-anchor" href="#perturb-and-observe-po">§</a>Perturb and Observe (P&amp;O)</h4>
+<ul>
+<li><a href="perturb_and_observe/index.html" title="mod libpower::mppt::perturb_and_observe"><code>perturb_and_observe</code></a> - Classical hill-climbing algorithm</li>
+<li><strong>Principle</strong>: Perturb voltage and observe power change</li>
+<li><strong>Advantages</strong>: Simple implementation, low computational cost</li>
+<li><strong>Disadvantages</strong>: Oscillates around MPP, can be confused by rapid irradiance changes</li>
+</ul>
+<h4 id="incremental-conductance-ic"><a class="doc-anchor" href="#incremental-conductance-ic">§</a>Incremental Conductance (IC)</h4>
+<ul>
+<li><a href="incremental_conductance/index.html" title="mod libpower::mppt::incremental_conductance"><code>incremental_conductance</code></a> - Advanced gradient-based method</li>
+<li><strong>Principle</strong>: Uses dP/dV = 0 condition at MPP</li>
+<li><strong>Advantages</strong>: Can detect when MPP is reached, better dynamic response</li>
+<li><strong>Disadvantages</strong>: More complex implementation, sensitive to noise</li>
+</ul>
+<h3 id="algorithm-comparison"><a class="doc-anchor" href="#algorithm-comparison">§</a>Algorithm Comparison</h3><div><table><thead><tr><th>Feature</th><th>P&amp;O</th><th>IC</th></tr></thead><tbody>
+<tr><td>Simplicity</td><td>High</td><td>Medium</td></tr>
+<tr><td>Speed</td><td>Fast</td><td>Medium</td></tr>
+<tr><td>Steady-state accuracy</td><td>Medium</td><td>High</td></tr>
+<tr><td>Dynamic response</td><td>Medium</td><td>Good</td></tr>
+<tr><td>Noise sensitivity</td><td>Low</td><td>Medium</td></tr>
+<tr><td>Memory requirements</td><td>Low</td><td>Low</td></tr>
+</tbody></table>
+</div><h3 id="implementation-considerations"><a class="doc-anchor" href="#implementation-considerations">§</a>Implementation Considerations</h3><h4 id="step-size-selection"><a class="doc-anchor" href="#step-size-selection">§</a>Step Size Selection</h4>
+<ul>
+<li><strong>Large steps</strong>: Faster tracking, more oscillation</li>
+<li><strong>Small steps</strong>: Slower tracking, less oscillation</li>
+<li><strong>Adaptive step size</strong>: Optimal compromise (not implemented)</li>
+</ul>
+<h4 id="sampling-frequency"><a class="doc-anchor" href="#sampling-frequency">§</a>Sampling Frequency</h4>
+<ul>
+<li><strong>Typical range</strong>: 1-100 Hz depending on application</li>
+<li><strong>Trade-offs</strong>: Faster sampling vs. computational load</li>
+<li><strong>Consideration</strong>: PV array time constants (typically slow)</li>
+</ul>
+<h4 id="practical-considerations"><a class="doc-anchor" href="#practical-considerations">§</a>Practical Considerations</h4>
+<ul>
+<li><strong>Voltage and current measurement accuracy</strong></li>
+<li><strong>Converter dynamics and control loop interactions</strong></li>
+<li><strong>Protection against out-of-range operating points</strong></li>
+<li><strong>Startup and shutdown procedures</strong></li>
+</ul>
+<h3 id="applications"><a class="doc-anchor" href="#applications">§</a>Applications</h3>
+<ul>
+<li>Grid-tied solar inverters</li>
+<li>Battery charging systems</li>
+<li>Standalone PV systems</li>
+<li>Solar water pumping</li>
+<li>Electric vehicle solar charging</li>
+<li>Building-integrated photovoltaics (BIPV)</li>
+</ul>
+<h3 id="example-usage"><a class="doc-anchor" href="#example-usage">§</a>Example Usage</h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>libpower::mppt::perturb_and_observe::MPPT;
+
+<span class="comment">// Create and configure MPPT tracker
+</span><span class="kw">let </span><span class="kw-2">mut </span>mppt = MPPT::new();
+mppt.set_step_size(<span class="number">0.1</span>);           <span class="comment">// 0.1V step size
+</span>mppt.set_mppt_v_out_max(<span class="number">24.0</span>);     <span class="comment">// 24V maximum
+</span>mppt.set_mppt_v_out_min(<span class="number">12.0</span>);     <span class="comment">// 12V minimum
+
+// Simulate control loop samples
+</span><span class="kw">let </span>pv_measurements = [
+    (<span class="number">5.0</span>, <span class="number">18.0</span>),  <span class="comment">// (current, voltage) pairs
+    </span>(<span class="number">5.1</span>, <span class="number">18.2</span>),
+    (<span class="number">5.2</span>, <span class="number">18.1</span>),
+];
+
+<span class="kw">for </span>(pv_current, pv_voltage) <span class="kw">in </span>pv_measurements.iter() {
+    mppt.calculate(<span class="kw-2">*</span>pv_current, <span class="kw-2">*</span>pv_voltage);     <span class="comment">// Run MPPT algorithm
+    </span><span class="kw">let </span>reference_voltage = mppt.get_mppt_v_out(); <span class="comment">// Get voltage reference
+    // In real application: set_converter_reference(reference_voltage);
+</span>}</code></pre></div></div></details><h2 id="modules" class="section-header">Modules<a href="#modules" class="anchor">§</a></h2><dl class="item-table"><dt><a class="mod" href="incremental_conductance/index.html" title="mod libpower::mppt::incremental_conductance">incremental_<wbr>conductance</a></dt><dd>Incremental Conductance (IC) MPPT Algorithm</dd><dt><a class="mod" href="perturb_and_observe/index.html" title="mod libpower::mppt::perturb_and_observe">perturb_<wbr>and_<wbr>observe</a></dt><dd>Perturb and Observe (P&amp;O) MPPT Algorithm</dd></dl></section></div></main></body></html>

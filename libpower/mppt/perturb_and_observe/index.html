@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Perturb and Observe (P&#38;O) MPPT Algorithm"><title>libpower::mppt::perturb_and_observe - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="libpower" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (7f99507f5 2026-02-19)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-41dd4d93.js"></script><script defer src="../sidebar-items.js"></script><script defer src="../../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc mod"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><rustdoc-topbar><h2><a href="#">Module perturb_and_observe</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../../libpower/index.html">libpower</a><span class="version">0.2.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Module perturb_<wbr>and_<wbr>observe</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#perturb-and-observe-po-mppt-algorithm" title="Perturb and Observe (P&#38;O) MPPT Algorithm">Perturb and Observe (P&amp;O) MPPT Algorithm</a><ul><li><a href="#theory" title="Theory">Theory</a></li><li><a href="#algorithm-logic" title="Algorithm Logic">Algorithm Logic</a></li><li><a href="#advantages" title="Advantages">Advantages</a></li><li><a href="#limitations" title="Limitations">Limitations</a></li><li><a href="#applications" title="Applications">Applications</a></li></ul></li></ul><h3><a href="#structs">Module Items</a></h3><ul class="block"><li><a href="#structs" title="Structs">Structs</a></li></ul></section><div id="rustdoc-modnav"><h2><a href="../index.html">In libpower::<wbr>mppt</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../../index.html">libpower</a>::<wbr><a href="../index.html">mppt</a></div><h1>Module <span>perturb_<wbr>and_<wbr>observe</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../../src/libpower/mppt/perturb_and_observe.rs.html#1-457">Source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="perturb-and-observe-po-mppt-algorithm"><a class="doc-anchor" href="#perturb-and-observe-po-mppt-algorithm">§</a>Perturb and Observe (P&amp;O) MPPT Algorithm</h2>
+<p>This module implements the classic Perturb and Observe Maximum Power Point Tracking
+algorithm commonly used in photovoltaic systems. The P&amp;O algorithm is based on the
+hill-climbing principle where the operating point is perturbed and the resulting
+power change is observed to determine the direction toward the maximum power point.</p>
+<h3 id="theory"><a class="doc-anchor" href="#theory">§</a>Theory</h3>
+<p>The P&amp;O algorithm operates on the principle that:</p>
+<ul>
+<li>At the MPP: dP/dV = 0 (slope of P-V curve is zero)</li>
+<li>Left of MPP: dP/dV &gt; 0 (increasing voltage increases power)</li>
+<li>Right of MPP: dP/dV &lt; 0 (increasing voltage decreases power)</li>
+</ul>
+<h3 id="algorithm-logic"><a class="doc-anchor" href="#algorithm-logic">§</a>Algorithm Logic</h3><div class="example-wrap"><pre class="language-text"><code>1. Measure current PV voltage and current
+2. Calculate current power: P(k) = V(k) × I(k)
+3. Compare with previous power: ΔP = P(k) - P(k-1)
+4. Determine perturbation direction:
+   - If ΔP &gt; 0: Continue in same direction
+   - If ΔP &lt; 0: Reverse direction
+5. Apply voltage perturbation: V_ref = V_ref ± step_size
+6. Update previous values for next iteration</code></pre></div><h3 id="advantages"><a class="doc-anchor" href="#advantages">§</a>Advantages</h3>
+<ul>
+<li><strong>Simplicity</strong>: Easy to implement and understand</li>
+<li><strong>Low computational cost</strong>: Minimal processing requirements</li>
+<li><strong>Hardware independence</strong>: Works with any converter topology</li>
+<li><strong>No PV array parameters required</strong>: Model-free operation</li>
+</ul>
+<h3 id="limitations"><a class="doc-anchor" href="#limitations">§</a>Limitations</h3>
+<ul>
+<li><strong>Steady-state oscillation</strong>: Continuously oscillates around MPP</li>
+<li><strong>Poor dynamic response</strong>: Can be confused by rapid irradiance changes</li>
+<li><strong>Drift under uniform irradiance</strong>: May drift away from true MPP</li>
+<li><strong>Step size trade-off</strong>: Large steps = fast tracking but more oscillation</li>
+</ul>
+<h3 id="applications"><a class="doc-anchor" href="#applications">§</a>Applications</h3>
+<ul>
+<li>Grid-tied solar inverters</li>
+<li>Battery charging systems</li>
+<li>Standalone PV systems</li>
+<li>Water pumping systems</li>
+<li>Small-scale solar installations</li>
+</ul>
+</div></details><h2 id="structs" class="section-header">Structs<a href="#structs" class="anchor">§</a></h2><dl class="item-table"><dt><a class="struct" href="struct.MPPT.html" title="struct libpower::mppt::perturb_and_observe::MPPT">MPPT</a></dt><dd>Perturb and Observe MPPT controller implementation.</dd></dl></section></div></main></body></html>

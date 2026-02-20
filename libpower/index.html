@@ -1,0 +1,98 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="libpower - A no_std Rust library for power electronics, optimized for use on microcontrollers"><title>libpower - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="libpower" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (7f99507f5 2026-02-19)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../static.files/storage-41dd4d93.js"></script><script defer src="../crates.js"></script><script defer src="../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc mod crate"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><rustdoc-topbar><h2><a href="#">Crate libpower</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../libpower/index.html">libpower</a><span class="version">0.2.0</span></h2></div><div class="sidebar-elems"><ul class="block"><li><a id="all-types" href="all.html">All Items</a></li></ul><section id="rustdoc-toc"><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#libpower---a-no_std-rust-library-for-power-electronics-optimized-for-use-on-microcontrollers" title="libpower - A no_std Rust library for power electronics, optimized for use on microcontrollers">libpower - A no_std Rust library for power electronics, optimized for use on microcontrollers</a><ul><li><a href="#features" title="Features">Features</a></li><li><a href="#architecture" title="Architecture">Architecture</a></li><li><a href="#usage-patterns" title="Usage Patterns">Usage Patterns</a></li><li><a href="#design-principles" title="Design Principles">Design Principles</a></li><li><a href="#target-applications" title="Target Applications">Target Applications</a></li><li><a href="#examples" title="Examples">Examples</a></li></ul></li></ul><h3><a href="#modules">Crate Items</a></h3><ul class="block"><li><a href="#modules" title="Modules">Modules</a></li></ul></section><div id="rustdoc-modnav"></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><h1>Crate <span>libpower</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/libpower/lib.rs.html#1-138">Source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="libpower---a-no_std-rust-library-for-power-electronics-optimized-for-use-on-microcontrollers"><a class="doc-anchor" href="#libpower---a-no_std-rust-library-for-power-electronics-optimized-for-use-on-microcontrollers">§</a>libpower - A no_std Rust library for power electronics, optimized for use on microcontrollers</h2>
+<p><code>libpower</code> is a comprehensive <code>no_std</code> Rust library designed for power electronics applications
+in embedded systems. It provides a collection of digital signal processing (DSP) algorithms,
+control systems, and power electronics primitives optimized for real-time control applications.</p>
+<h3 id="features"><a class="doc-anchor" href="#features">§</a>Features</h3>
+<ul>
+<li><strong>No Standard Library Dependencies</strong>: Built for embedded systems with <code>#![no_std]</code></li>
+<li><strong>Real-time Performance</strong>: Optimized for deterministic, low-latency control loops</li>
+<li><strong>Comprehensive Control Systems</strong>: PID, PI, and advanced pole-zero controllers</li>
+<li><strong>Digital Signal Processing</strong>: High-performance filters (Butterworth, Chebyshev)</li>
+<li><strong>Power Electronics Algorithms</strong>: MPPT, PLL, coordinate transformations</li>
+<li><strong>Signal Generation</strong>: Configurable waveform generators with metrics</li>
+</ul>
+<h3 id="architecture"><a class="doc-anchor" href="#architecture">§</a>Architecture</h3>
+<p>The library is organized into several modules, each targeting specific aspects of
+power electronics control:</p>
+<h4 id="core-modules"><a class="doc-anchor" href="#core-modules">§</a>Core Modules</h4>
+<ul>
+<li><a href="battery/index.html" title="mod libpower::battery"><code>battery</code></a> - Battery management and State of Charge estimation</li>
+<li><a href="control/index.html" title="mod libpower::control"><code>control</code></a> - Digital control systems (PID, PI, pole-zero controllers)</li>
+<li><a href="filter/index.html" title="mod libpower::filter"><code>filter</code></a> - Digital signal processing filters</li>
+<li><a href="mppt/index.html" title="mod libpower::mppt"><code>mppt</code></a> - Maximum Power Point Tracking algorithms</li>
+<li><a href="pll/index.html" title="mod libpower::pll"><code>pll</code></a> - Phase-Locked Loop implementations</li>
+<li><a href="signal/index.html" title="mod libpower::signal"><code>signal</code></a> - Signal generation and analysis tools</li>
+<li><a href="transform/index.html" title="mod libpower::transform"><code>transform</code></a> - Coordinate transformations (Clarke, Park, etc.)</li>
+</ul>
+<h3 id="usage-patterns"><a class="doc-anchor" href="#usage-patterns">§</a>Usage Patterns</h3><h4 id="basic-control-loop"><a class="doc-anchor" href="#basic-control-loop">§</a>Basic Control Loop</h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>libpower::control::cntl_pi::ControllerPI;
+
+<span class="comment">// Create a PI controller with gains
+</span><span class="kw">let </span><span class="kw-2">mut </span>controller = ControllerPI::with_gains(<span class="number">1.0</span>, <span class="number">0.1</span>);
+controller.set_limits(-<span class="number">10.0</span>, <span class="number">10.0</span>);
+
+<span class="comment">// In your control loop
+</span><span class="kw">let </span>setpoint = <span class="number">5.0</span>;
+<span class="kw">let </span>measurement = <span class="number">4.5</span>;
+<span class="kw">let </span>output = controller.calculate(setpoint, measurement);</code></pre></div><h4 id="digital-filtering"><a class="doc-anchor" href="#digital-filtering">§</a>Digital Filtering</h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>libpower::filter::butterworth_lpf::ButterworthLPF;
+
+<span class="comment">// Create and initialize a 4th-order Butterworth low-pass filter
+</span><span class="kw">let </span><span class="kw-2">mut </span>filter = ButterworthLPF::&lt;<span class="number">4</span>&gt;::new_uninit();
+filter.init(<span class="number">4</span>, <span class="number">1000.0</span>, <span class="number">44100.0</span>); <span class="comment">// 4th order, 1kHz cutoff, 44.1kHz sampling
+
+// Process samples
+</span><span class="kw">let </span>input_sample = <span class="number">1.0</span>;
+<span class="kw">let </span>filtered_output = filter.process(input_sample);</code></pre></div><h4 id="mppt-implementation"><a class="doc-anchor" href="#mppt-implementation">§</a>MPPT Implementation</h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>libpower::mppt::perturb_and_observe::MPPT;
+
+<span class="kw">let </span><span class="kw-2">mut </span>mppt = MPPT::new();
+mppt.set_step_size(<span class="number">0.1</span>);
+mppt.set_mppt_v_out_max(<span class="number">24.0</span>);
+mppt.set_mppt_v_out_min(<span class="number">12.0</span>);
+
+<span class="comment">// In your control loop
+</span><span class="kw">let </span>pv_current = <span class="number">5.0</span>; <span class="comment">// Example: 5A
+</span><span class="kw">let </span>pv_voltage = <span class="number">18.0</span>; <span class="comment">// Example: 18V
+</span>mppt.calculate(pv_current, pv_voltage);
+<span class="kw">let </span>reference_voltage = mppt.get_mppt_v_out();</code></pre></div><h4 id="battery-state-of-charge-estimation"><a class="doc-anchor" href="#battery-state-of-charge-estimation">§</a>Battery State of Charge Estimation</h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>libpower::battery::soc::Battery;
+
+<span class="kw">let </span><span class="kw-2">mut </span>soc_estimator = Battery::new(<span class="number">0.8</span>, <span class="number">50.0 </span>* <span class="number">3600.0</span>, <span class="number">1.0</span>);
+soc_estimator.set_process_noise(<span class="number">1e-5</span>);
+soc_estimator.set_measurement_noise(<span class="number">5e-4</span>);
+
+<span class="comment">// In your control loop
+</span><span class="kw">let </span>battery_current = -<span class="number">15.0</span>; <span class="comment">// 15A discharge
+</span><span class="kw">let </span>terminal_voltage = <span class="number">3.6</span>; <span class="comment">// Measured terminal voltage
+</span><span class="kw">let </span>estimated_soc = soc_estimator.update(battery_current, terminal_voltage);</code></pre></div><h3 id="design-principles"><a class="doc-anchor" href="#design-principles">§</a>Design Principles</h3><h4 id="performance"><a class="doc-anchor" href="#performance">§</a>Performance</h4>
+<ul>
+<li>All algorithms use single-precision floating-point arithmetic (<code>f32</code>)</li>
+<li>Minimal memory allocation (stack-based, pre-allocated buffers)</li>
+<li>Optimized for real-time control loops (typically 1-100 kHz)</li>
+</ul>
+<h4 id="safety"><a class="doc-anchor" href="#safety">§</a>Safety</h4>
+<ul>
+<li>Saturation limits and bounds checking where appropriate</li>
+<li>Graceful handling of edge cases and invalid inputs</li>
+<li>Clear error reporting through <code>Result</code> types where applicable</li>
+</ul>
+<h4 id="modularity"><a class="doc-anchor" href="#modularity">§</a>Modularity</h4>
+<ul>
+<li>Each algorithm is self-contained with minimal dependencies</li>
+<li>State variables are encapsulated within structs</li>
+<li>Configurable parameters with sensible defaults</li>
+</ul>
+<h3 id="target-applications"><a class="doc-anchor" href="#target-applications">§</a>Target Applications</h3>
+<ul>
+<li>DC-DC converters and power supplies</li>
+<li>Motor drives and inverters</li>
+<li>Solar inverters and MPPT controllers</li>
+<li>Grid-tied power electronics</li>
+<li>Battery management systems</li>
+<li>Power factor correction circuits</li>
+</ul>
+<h3 id="examples"><a class="doc-anchor" href="#examples">§</a>Examples</h3>
+<p>See the individual module documentation and the <code>tests/</code> directory for comprehensive
+examples of each algorithm and typical usage patterns.</p>
+</div></details><h2 id="modules" class="section-header">Modules<a href="#modules" class="anchor">§</a></h2><dl class="item-table"><dt><a class="mod" href="battery/index.html" title="mod libpower::battery">battery</a></dt><dt><a class="mod" href="control/index.html" title="mod libpower::control">control</a></dt><dd>Digital Control Systems</dd><dt><a class="mod" href="filter/index.html" title="mod libpower::filter">filter</a></dt><dd>Digital Signal Processing Filters</dd><dt><a class="mod" href="modulation/index.html" title="mod libpower::modulation">modulation</a></dt><dt><a class="mod" href="motor_control/index.html" title="mod libpower::motor_control">motor_<wbr>control</a></dt><dt><a class="mod" href="mppt/index.html" title="mod libpower::mppt">mppt</a></dt><dd>Maximum Power Point Tracking (MPPT) Algorithms</dd><dt><a class="mod" href="pll/index.html" title="mod libpower::pll">pll</a></dt><dt><a class="mod" href="signal/index.html" title="mod libpower::signal">signal</a></dt><dt><a class="mod" href="system/index.html" title="mod libpower::system">system</a></dt><dt><a class="mod" href="transform/index.html" title="mod libpower::transform">transform</a></dt></dl></section></div></main></body></html>

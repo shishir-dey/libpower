@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Digital Signal Processing Filters"><title>libpower::filter - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="libpower" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (7f99507f5 2026-02-19)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="../sidebar-items.js"></script><script defer src="../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc mod"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><rustdoc-topbar><h2><a href="#">Module filter</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../libpower/index.html">libpower</a><span class="version">0.2.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Module filter</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#digital-signal-processing-filters" title="Digital Signal Processing Filters">Digital Signal Processing Filters</a><ul><li><a href="#available-filter-types" title="Available Filter Types">Available Filter Types</a></li><li><a href="#filter-characteristics" title="Filter Characteristics">Filter Characteristics</a></li><li><a href="#implementation-details" title="Implementation Details">Implementation Details</a></li><li><a href="#usage-guidelines" title="Usage Guidelines">Usage Guidelines</a></li><li><a href="#example-usage" title="Example Usage">Example Usage</a></li></ul></li></ul><h3><a href="#modules">Module Items</a></h3><ul class="block"><li><a href="#modules" title="Modules">Modules</a></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="../index.html">In crate libpower</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">libpower</a></div><h1>Module <span>filter</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/libpower/filter/mod.rs.html#1-76">Source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="digital-signal-processing-filters"><a class="doc-anchor" href="#digital-signal-processing-filters">§</a>Digital Signal Processing Filters</h2>
+<p>This module provides a collection of high-performance digital filters commonly used
+in power electronics and embedded control systems. All filters are implemented as
+second-order sections (SOS) for numerical stability and modularity.</p>
+<h3 id="available-filter-types"><a class="doc-anchor" href="#available-filter-types">§</a>Available Filter Types</h3><h4 id="butterworth-filters"><a class="doc-anchor" href="#butterworth-filters">§</a>Butterworth Filters</h4>
+<ul>
+<li><a href="butterworth_lpf/index.html" title="mod libpower::filter::butterworth_lpf"><code>butterworth_lpf</code></a> - Butterworth low-pass filter (maximally flat passband)</li>
+<li><a href="butterworth_hpf/index.html" title="mod libpower::filter::butterworth_hpf"><code>butterworth_hpf</code></a> - Butterworth high-pass filter (maximally flat passband)</li>
+</ul>
+<h4 id="chebyshev-type-i-filters"><a class="doc-anchor" href="#chebyshev-type-i-filters">§</a>Chebyshev Type I Filters</h4>
+<ul>
+<li><a href="chebyshev_lpf/index.html" title="mod libpower::filter::chebyshev_lpf"><code>chebyshev_lpf</code></a> - Chebyshev low-pass filter (equiripple passband)</li>
+<li><a href="chebyshev_hpf/index.html" title="mod libpower::filter::chebyshev_hpf"><code>chebyshev_hpf</code></a> - Chebyshev high-pass filter (equiripple passband)</li>
+</ul>
+<h3 id="filter-characteristics"><a class="doc-anchor" href="#filter-characteristics">§</a>Filter Characteristics</h3><h4 id="butterworth-filters-1"><a class="doc-anchor" href="#butterworth-filters-1">§</a>Butterworth Filters</h4>
+<ul>
+<li><strong>Advantages</strong>: Maximally flat passband, no ripple, good phase response</li>
+<li><strong>Applications</strong>: Anti-aliasing, general-purpose filtering, measurement systems</li>
+<li><strong>Roll-off</strong>: 20n dB/decade (where n is the filter order)</li>
+</ul>
+<h4 id="chebyshev-type-i-filters-1"><a class="doc-anchor" href="#chebyshev-type-i-filters-1">§</a>Chebyshev Type I Filters</h4>
+<ul>
+<li><strong>Advantages</strong>: Steeper roll-off than Butterworth, compact implementation</li>
+<li><strong>Disadvantages</strong>: Passband ripple, more phase distortion</li>
+<li><strong>Applications</strong>: Anti-aliasing with tight transition bands, EMI filtering</li>
+<li><strong>Roll-off</strong>: Steeper than Butterworth for same order</li>
+</ul>
+<h3 id="implementation-details"><a class="doc-anchor" href="#implementation-details">§</a>Implementation Details</h3><h4 id="second-order-sections-sos"><a class="doc-anchor" href="#second-order-sections-sos">§</a>Second-Order Sections (SOS)</h4>
+<p>All filters are implemented using cascaded second-order sections:</p>
+<ul>
+<li><strong>Numerical Stability</strong>: Reduced coefficient sensitivity</li>
+<li><strong>Modularity</strong>: Easy to implement different orders</li>
+<li><strong>Efficiency</strong>: Optimized for real-time applications</li>
+</ul>
+<h4 id="supported-orders"><a class="doc-anchor" href="#supported-orders">§</a>Supported Orders</h4>
+<ul>
+<li><strong>Range</strong>: 2nd to 8th order (even orders only)</li>
+<li><strong>Automatic Adjustment</strong>: Invalid orders are bounded and rounded</li>
+<li><strong>Sections</strong>: Each filter uses order/2 second-order sections</li>
+</ul>
+<h3 id="usage-guidelines"><a class="doc-anchor" href="#usage-guidelines">§</a>Usage Guidelines</h3><h4 id="sampling-frequency-considerations"><a class="doc-anchor" href="#sampling-frequency-considerations">§</a>Sampling Frequency Considerations</h4>
+<ul>
+<li>Ensure fs &gt; 2 * fc (Nyquist criterion)</li>
+<li>Typical ratio: fs/fc &gt; 10 for good performance</li>
+<li>Account for transition band requirements</li>
+</ul>
+<h4 id="filter-selection"><a class="doc-anchor" href="#filter-selection">§</a>Filter Selection</h4>
+<ul>
+<li><strong>Butterworth</strong>: Choose for phase-critical applications</li>
+<li><strong>Chebyshev</strong>: Choose when sharp cutoff is required</li>
+<li><strong>Order Selection</strong>: Higher order = sharper cutoff, more delay</li>
+</ul>
+<h3 id="example-usage"><a class="doc-anchor" href="#example-usage">§</a>Example Usage</h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>libpower::filter::butterworth_lpf::ButterworthLPF;
+
+<span class="comment">// Create and initialize a 4th-order Butterworth low-pass filter
+</span><span class="kw">let </span><span class="kw-2">mut </span>filter = ButterworthLPF::&lt;<span class="number">4</span>&gt;::new_uninit();
+filter.init(<span class="number">4</span>, <span class="number">1000.0</span>, <span class="number">44100.0</span>); <span class="comment">// 4th order, 1kHz cutoff, 44.1kHz sampling
+
+// Process signal samples
+</span><span class="kw">let </span>input_signal = [<span class="number">1.0</span>, <span class="number">0.5</span>, -<span class="number">0.5</span>, -<span class="number">1.0</span>, <span class="number">0.0</span>];
+<span class="kw">let </span><span class="kw-2">mut </span>filtered_signal = Vec::new();
+<span class="kw">for </span>sample <span class="kw">in </span>input_signal.iter() {
+    <span class="kw">let </span>filtered = filter.process(<span class="kw-2">*</span>sample);
+    filtered_signal.push(filtered);
+}</code></pre></div></div></details><h2 id="modules" class="section-header">Modules<a href="#modules" class="anchor">§</a></h2><dl class="item-table"><dt><a class="mod" href="butterworth_hpf/index.html" title="mod libpower::filter::butterworth_hpf">butterworth_<wbr>hpf</a></dt><dd>Butterworth High-Pass Filter</dd><dt><a class="mod" href="butterworth_lpf/index.html" title="mod libpower::filter::butterworth_lpf">butterworth_<wbr>lpf</a></dt><dd>Butterworth Low-Pass Filter</dd><dt><a class="mod" href="chebyshev_hpf/index.html" title="mod libpower::filter::chebyshev_hpf">chebyshev_<wbr>hpf</a></dt><dd>Chebyshev Type I High-Pass Filter</dd><dt><a class="mod" href="chebyshev_lpf/index.html" title="mod libpower::filter::chebyshev_lpf">chebyshev_<wbr>lpf</a></dt><dd>Chebyshev Type I Low-Pass Filter</dd></dl></section></div></main></body></html>

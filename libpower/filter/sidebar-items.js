@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["butterworth_hpf","butterworth_lpf","chebyshev_hpf","chebyshev_lpf"]};

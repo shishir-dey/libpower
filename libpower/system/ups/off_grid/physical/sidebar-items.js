@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["buzzer","clock","display","fan","gpio","pwm","relay","serial","temperature"]};

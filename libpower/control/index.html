@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Digital Control Systems"><title>libpower::control - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="libpower" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (7f99507f5 2026-02-19)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="../sidebar-items.js"></script><script defer src="../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc mod"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><rustdoc-topbar><h2><a href="#">Module control</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../libpower/index.html">libpower</a><span class="version">0.2.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Module control</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#digital-control-systems" title="Digital Control Systems">Digital Control Systems</a><ul><li><a href="#available-controllers" title="Available Controllers">Available Controllers</a></li><li><a href="#controller-selection-guide" title="Controller Selection Guide">Controller Selection Guide</a></li><li><a href="#design-considerations" title="Design Considerations">Design Considerations</a></li><li><a href="#example-usage" title="Example Usage">Example Usage</a></li></ul></li></ul><h3><a href="#modules">Module Items</a></h3><ul class="block"><li><a href="#modules" title="Modules">Modules</a></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="../index.html">In crate libpower</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">libpower</a></div><h1>Module <span>control</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/libpower/control/mod.rs.html#1-77">Source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="digital-control-systems"><a class="doc-anchor" href="#digital-control-systems">§</a>Digital Control Systems</h2>
+<p>This module provides a comprehensive collection of digital control algorithms commonly
+used in power electronics and embedded control systems. All controllers are implemented
+as discrete-time systems suitable for real-time control loops.</p>
+<h3 id="available-controllers"><a class="doc-anchor" href="#available-controllers">§</a>Available Controllers</h3><h4 id="linear-controllers"><a class="doc-anchor" href="#linear-controllers">§</a>Linear Controllers</h4>
+<ul>
+<li><a href="cntl_pi/index.html" title="mod libpower::control::cntl_pi"><code>cntl_pi</code></a> - Proportional-Integral (PI) controller with anti-windup</li>
+<li><a href="cntl_pid/index.html" title="mod libpower::control::cntl_pid"><code>cntl_pid</code></a> - Proportional-Integral-Derivative (PID) controller</li>
+</ul>
+<h4 id="advanced-controllers"><a class="doc-anchor" href="#advanced-controllers">§</a>Advanced Controllers</h4>
+<ul>
+<li><a href="cntl_2p2z/index.html" title="mod libpower::control::cntl_2p2z"><code>cntl_2p2z</code></a> - Two-pole, two-zero controller (2P2Z compensator)</li>
+<li><a href="cntl_3p3z/index.html" title="mod libpower::control::cntl_3p3z"><code>cntl_3p3z</code></a> - Three-pole, three-zero controller (3P3Z compensator)</li>
+</ul>
+<h3 id="controller-selection-guide"><a class="doc-anchor" href="#controller-selection-guide">§</a>Controller Selection Guide</h3><h4 id="pi-controller"><a class="doc-anchor" href="#pi-controller">§</a>PI Controller</h4>
+<ul>
+<li><strong>Best for</strong>: DC-DC converters, current loops, simple voltage regulation</li>
+<li><strong>Advantages</strong>: Zero steady-state error, built-in anti-windup</li>
+<li><strong>Limitations</strong>: Cannot add zeros for improved transient response</li>
+</ul>
+<h4 id="pid-controller"><a class="doc-anchor" href="#pid-controller">§</a>PID Controller</h4>
+<ul>
+<li><strong>Best for</strong>: General-purpose control, systems requiring derivative action</li>
+<li><strong>Advantages</strong>: Includes derivative term for improved transient response</li>
+<li><strong>Limitations</strong>: Sensitive to noise, requires tuning of three parameters</li>
+</ul>
+<h4 id="2p2z-controller"><a class="doc-anchor" href="#2p2z-controller">§</a>2P2Z Controller</h4>
+<ul>
+<li><strong>Best for</strong>: DC-DC converter voltage loops, single-phase power supplies</li>
+<li><strong>Advantages</strong>: Two zeros for improved transient response and stability margins</li>
+<li><strong>Applications</strong>: Buck/boost converters, battery chargers</li>
+</ul>
+<h4 id="3p3z-controller"><a class="doc-anchor" href="#3p3z-controller">§</a>3P3Z Controller</h4>
+<ul>
+<li><strong>Best for</strong>: Three-phase systems, complex power conversion topologies</li>
+<li><strong>Advantages</strong>: Additional poles and zeros for precise frequency response shaping</li>
+<li><strong>Applications</strong>: Grid-tied inverters, motor drives, advanced power supplies</li>
+</ul>
+<h3 id="design-considerations"><a class="doc-anchor" href="#design-considerations">§</a>Design Considerations</h3><h4 id="sampling-frequency"><a class="doc-anchor" href="#sampling-frequency">§</a>Sampling Frequency</h4>
+<p>All controllers assume a fixed sampling period. Typical sampling frequencies:</p>
+<ul>
+<li>Current loops: 10-100 kHz</li>
+<li>Voltage loops: 1-10 kHz</li>
+<li>Outer control loops: 100 Hz - 1 kHz</li>
+</ul>
+<h4 id="saturation-and-anti-windup"><a class="doc-anchor" href="#saturation-and-anti-windup">§</a>Saturation and Anti-windup</h4>
+<p>All controllers include configurable output saturation limits to prevent:</p>
+<ul>
+<li>Integrator windup</li>
+<li>Actuator saturation</li>
+<li>System instability</li>
+</ul>
+<h4 id="coefficient-calculation"><a class="doc-anchor" href="#coefficient-calculation">§</a>Coefficient Calculation</h4>
+<p>Controller coefficients are typically designed using:</p>
+<ul>
+<li>Bode plot analysis</li>
+<li>Root locus techniques</li>
+<li>Digital control design tools (MATLAB, Python control)</li>
+</ul>
+<h3 id="example-usage"><a class="doc-anchor" href="#example-usage">§</a>Example Usage</h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>libpower::control::cntl_pi::ControllerPI;
+
+<span class="comment">// Create PI controller for current loop
+</span><span class="kw">let </span><span class="kw-2">mut </span>current_controller = ControllerPI::with_gains(<span class="number">0.5</span>, <span class="number">100.0</span>);
+current_controller.set_limits(-<span class="number">1.0</span>, <span class="number">1.0</span>); <span class="comment">// ±1.0 duty cycle
+
+// Control loop execution
+</span><span class="kw">let </span>current_reference = <span class="number">5.0</span>; <span class="comment">// 5A reference
+</span><span class="kw">let </span>current_measurement = <span class="number">4.8</span>; <span class="comment">// 4.8A measured
+</span><span class="kw">let </span>duty_cycle = current_controller.calculate(current_reference, current_measurement);</code></pre></div></div></details><h2 id="modules" class="section-header">Modules<a href="#modules" class="anchor">§</a></h2><dl class="item-table"><dt><a class="mod" href="cntl_2p2z/index.html" title="mod libpower::control::cntl_2p2z">cntl_<wbr>2p2z</a></dt><dd>Two-Pole Two-Zero (2P2Z) Digital Compensator</dd><dt><a class="mod" href="cntl_3p3z/index.html" title="mod libpower::control::cntl_3p3z">cntl_<wbr>3p3z</a></dt><dd>Three-Pole Three-Zero (3P3Z) Digital Compensator</dd><dt><a class="mod" href="cntl_pi/index.html" title="mod libpower::control::cntl_pi">cntl_pi</a></dt><dd>Proportional-Integral (PI) Controller</dd><dt><a class="mod" href="cntl_pid/index.html" title="mod libpower::control::cntl_pid">cntl_<wbr>pid</a></dt><dd>Proportional-Integral-Derivative (PID) Controller</dd></dl></section></div></main></body></html>

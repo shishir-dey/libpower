@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="State of Charge (SoC) Estimation using Extended Kalman Filter"><title>libpower::battery::soc - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="libpower" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (7f99507f5 2026-02-19)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-41dd4d93.js"></script><script defer src="../sidebar-items.js"></script><script defer src="../../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc mod"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><rustdoc-topbar><h2><a href="#">Module soc</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../../libpower/index.html">libpower</a><span class="version">0.2.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Module soc</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#state-of-charge-soc-estimation-using-extended-kalman-filter" title="State of Charge (SoC) Estimation using Extended Kalman Filter">State of Charge (SoC) Estimation using Extended Kalman Filter</a><ul><li><a href="#battery-model" title="Battery Model">Battery Model</a></li><li><a href="#state-vector" title="State Vector">State Vector</a></li><li><a href="#usage-example" title="Usage Example">Usage Example</a></li><li><a href="#adding-new-battery-types" title="Adding New Battery Types">Adding New Battery Types</a></li></ul></li></ul><h3><a href="#structs">Module Items</a></h3><ul class="block"><li><a href="#structs" title="Structs">Structs</a></li></ul></section><div id="rustdoc-modnav"><h2><a href="../index.html">In libpower::<wbr>battery</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../../index.html">libpower</a>::<wbr><a href="../index.html">battery</a></div><h1>Module <span>soc</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../../src/libpower/battery/soc/mod.rs.html#1-555">Source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="state-of-charge-soc-estimation-using-extended-kalman-filter"><a class="doc-anchor" href="#state-of-charge-soc-estimation-using-extended-kalman-filter">§</a>State of Charge (SoC) Estimation using Extended Kalman Filter</h2>
+<p>This module implements a battery State of Charge estimation algorithm using an Extended Kalman Filter (EKF).
+The implementation is based on a 2nd-order RC equivalent circuit model with polynomial-based parameter
+estimation as a function of SoC.</p>
+<h3 id="battery-model"><a class="doc-anchor" href="#battery-model">§</a>Battery Model</h3>
+<p>The battery is modeled as:</p>
+<ul>
+<li>Open Circuit Voltage (Uocv) as a function of SoC</li>
+<li>Internal resistance (R_int) as a function of SoC</li>
+<li>Two RC circuits (R1-C1, R2-C2) representing transient behavior</li>
+</ul>
+<h3 id="state-vector"><a class="doc-anchor" href="#state-vector">§</a>State Vector</h3>
+<p>The state vector consists of:</p>
+<div class="example-wrap"><pre class="language-text"><code>X = [SoC, V_RC1, V_RC2]</code></pre></div>
+<p>Where:</p>
+<ul>
+<li><code>SoC</code>: State of Charge (0.0 to 1.0)</li>
+<li><code>V_RC1</code>: Voltage across first RC circuit</li>
+<li><code>V_RC2</code>: Voltage across second RC circuit</li>
+</ul>
+<h3 id="usage-example"><a class="doc-anchor" href="#usage-example">§</a>Usage Example</h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>libpower::battery::soc::Battery;
+
+<span class="comment">// Create estimator with default battery parameters (Li-Ion NMC 18650 3.7V 2200mAh 2C)
+</span><span class="kw">let </span><span class="kw-2">mut </span>estimator = Battery::new(<span class="number">0.9</span>, <span class="number">50.0 </span>* <span class="number">3600.0</span>, <span class="number">1.0</span>);
+estimator.set_process_noise(<span class="number">1e-5</span>);
+estimator.set_measurement_noise(<span class="number">5e-4</span>);
+
+<span class="comment">// Or create with specific battery type
+</span><span class="kw">let </span><span class="kw-2">mut </span>nmc_18650_3_7v_2500mah_2c_estimator = Battery::with_battery_type(
+    <span class="number">0.9</span>,
+    <span class="number">50.0 </span>* <span class="number">3600.0</span>,
+    <span class="number">1.0</span>,
+    <span class="string">"NMC_18650_3.7V_2500mAh_2C"
+</span>).unwrap();
+
+<span class="comment">// In your control loop
+</span><span class="kw">let </span>current = -<span class="number">10.0</span>; <span class="comment">// 10A discharge
+</span><span class="kw">let </span>terminal_voltage = <span class="number">3.7</span>; <span class="comment">// Measured terminal voltage
+
+</span><span class="kw">let </span>estimated_soc = estimator.update(current, terminal_voltage);
+<span class="macro">println!</span>(<span class="string">"Estimated SoC: {:.1}%"</span>, estimated_soc * <span class="number">100.0</span>);
+
+<span class="comment">// Get battery information
+</span><span class="kw">let </span>battery_info = estimator.get_battery_info();
+<span class="macro">println!</span>(<span class="string">"Battery: {} {} {}"</span>,
+         battery_info.manufacturer,
+         battery_info.chemistry,
+         battery_info.form_factor);</code></pre></div><h3 id="adding-new-battery-types"><a class="doc-anchor" href="#adding-new-battery-types">§</a>Adding New Battery Types</h3>
+<p>To add support for a new battery type:</p>
+<ol>
+<li>Create a new TOML file in <code>src/battery/soc/params/</code> with your battery parameters</li>
+<li>Add a new match case in <code>BatteryParameters::load_battery_type()</code></li>
+<li>The TOML file should contain sections for:
+<ul>
+<li><code>[battery_info]</code> - Battery metadata</li>
+<li><code>[internal_resistance]</code> - Internal resistance polynomial coefficients</li>
+<li><code>[rc_resistance]</code> - RC circuit resistance coefficients</li>
+<li><code>[rc_capacitance]</code> - RC circuit capacitance coefficients</li>
+<li><code>[open_circuit_voltage]</code> - Open circuit voltage coefficients</li>
+</ul>
+</li>
+</ol>
+</div></details><h2 id="structs" class="section-header">Structs<a href="#structs" class="anchor">§</a></h2><dl class="item-table"><dt><a class="struct" href="struct.Battery.html" title="struct libpower::battery::soc::Battery">Battery</a></dt><dd>Extended Kalman Filter-based State of Charge estimator for lithium-ion batteries.</dd><dt><a class="struct" href="struct.BatteryInfo.html" title="struct libpower::battery::soc::BatteryInfo">Battery<wbr>Info</a></dt><dd>Battery information and metadata</dd><dt><a class="struct" href="struct.BatteryParameters.html" title="struct libpower::battery::soc::BatteryParameters">Battery<wbr>Parameters</a></dt><dd>Complete battery parameter set loaded from TOML</dd><dt><a class="struct" href="struct.PolynomialCoefficients.html" title="struct libpower::battery::soc::PolynomialCoefficients">Polynomial<wbr>Coefficients</a></dt><dd>Polynomial coefficients for battery parameter calculations</dd></dl></section></div></main></body></html>

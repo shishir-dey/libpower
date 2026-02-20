@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Inverse Park Transformation (dq0 → αβ0)"><title>libpower::transform::ipark - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="libpower" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (7f99507f5 2026-02-19)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-41dd4d93.js"></script><script defer src="../sidebar-items.js"></script><script defer src="../../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc mod"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><rustdoc-topbar><h2><a href="#">Module ipark</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../../libpower/index.html">libpower</a><span class="version">0.2.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Module ipark</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#inverse-park-transformation-dq0--αβ0" title="Inverse Park Transformation (dq0 → αβ0)">Inverse Park Transformation (dq0 → αβ0)</a><ul><li><a href="#theory" title="Theory">Theory</a></li><li><a href="#physical-interpretation" title="Physical Interpretation">Physical Interpretation</a></li><li><a href="#control-flow-in-field-oriented-control" title="Control Flow in Field-Oriented Control">Control Flow in Field-Oriented Control</a></li><li><a href="#applications" title="Applications">Applications</a></li></ul></li></ul><h3><a href="#structs">Module Items</a></h3><ul class="block"><li><a href="#structs" title="Structs">Structs</a></li></ul></section><div id="rustdoc-modnav"><h2><a href="../index.html">In libpower::<wbr>transform</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../../index.html">libpower</a>::<wbr><a href="../index.html">transform</a></div><h1>Module <span>ipark</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../../src/libpower/transform/ipark.rs.html#1-565">Source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="inverse-park-transformation-dq0--αβ0"><a class="doc-anchor" href="#inverse-park-transformation-dq0--αβ0">§</a>Inverse Park Transformation (dq0 → αβ0)</h2>
+<p>This module implements the inverse Park transformation, which converts rotating
+reference frame quantities (dq coordinates) back into two-phase orthogonal
+stationary reference frame quantities (αβ coordinates). This transformation
+is essential for converting control signals from the rotating frame back to
+the stationary frame for implementation in three-phase systems.</p>
+<h3 id="theory"><a class="doc-anchor" href="#theory">§</a>Theory</h3>
+<p>The inverse Park transformation converts rotating dq components back into stationary
+αβ components. This is the mathematical inverse of the Park transformation and is
+crucial for implementing field-oriented control where control is performed in the
+dq frame but actuation must be in the abc frame.</p>
+<h4 id="mathematical-definition"><a class="doc-anchor" href="#mathematical-definition">§</a>Mathematical Definition</h4>
+<p><strong>Inverse Park Transform (dq0 → αβ0):</strong></p>
+<div class="example-wrap"><pre class="language-text"><code>[α]   [cos(θ)  -sin(θ)  0] [d]
+[β] = [sin(θ)   cos(θ)  0] [q]
+[0]   [0        0       1] [0]</code></pre></div><h4 id="expanded-form"><a class="doc-anchor" href="#expanded-form">§</a>Expanded Form</h4><div class="example-wrap"><pre class="language-text"><code>α = d×cos(θ) - q×sin(θ)     // Alpha component in stationary frame
+β = d×sin(θ) + q×cos(θ)     // Beta component in stationary frame  
+0 = 0                       // Zero-sequence unchanged</code></pre></div><h3 id="physical-interpretation"><a class="doc-anchor" href="#physical-interpretation">§</a>Physical Interpretation</h3>
+<ul>
+<li><strong>d component</strong>: DC magnitude aligned with rotating reference</li>
+<li><strong>q component</strong>: DC magnitude 90° ahead of rotating reference</li>
+<li><strong>θ (theta)</strong>: Rotation angle of the reference frame</li>
+<li><strong>α, β outputs</strong>: Sinusoidal quantities in stationary frame</li>
+</ul>
+<h3 id="control-flow-in-field-oriented-control"><a class="doc-anchor" href="#control-flow-in-field-oriented-control">§</a>Control Flow in Field-Oriented Control</h3>
+<ol>
+<li><strong>Measurement</strong>: abc → Clarke → αβ → Park → dq (DC quantities)</li>
+<li><strong>Control</strong>: PI controllers operate on DC dq quantities</li>
+<li><strong>Actuation</strong>: dq → Inverse Park → αβ → Inverse Clarke → abc</li>
+</ol>
+<h3 id="applications"><a class="doc-anchor" href="#applications">§</a>Applications</h3>
+<ul>
+<li><strong>Vector control of AC motors</strong>: Converting dq voltage commands to αβ</li>
+<li><strong>Grid-tied inverters</strong>: Converting dq current references to αβ</li>
+<li><strong>Active power filters</strong>: Converting rotating frame commands to stationary</li>
+<li><strong>Wind turbine control</strong>: Grid synchronization and power control</li>
+<li><strong>Battery energy storage</strong>: Grid interface voltage/current generation</li>
+<li><strong>Motor drive PWM generation</strong>: Creating three-phase modulation signals</li>
+</ul>
+</div></details><h2 id="structs" class="section-header">Structs<a href="#structs" class="anchor">§</a></h2><dl class="item-table"><dt><a class="struct" href="struct.IPark.html" title="struct libpower::transform::ipark::IPark">IPark</a></dt><dd>Inverse Park transformation for converting dq0 coordinates to αβ0 stationary coordinates.</dd></dl></section></div></main></body></html>

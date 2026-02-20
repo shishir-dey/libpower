@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["battery","control","filter","modulation","motor_control","mppt","pll","signal","system","transform"]};
