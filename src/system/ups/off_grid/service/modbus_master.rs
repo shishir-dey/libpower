@@ -1,5 +1,4 @@
-use crate::system::ups::off_grid::physical::serial::{Result as SerialResult, Serial};
-use crate::system::ups::off_grid::power_interface::PowerInterface;
+use crate::system::ups::off_grid::physical::serial::Serial;
 /// Modbus master implementation for UPS system services.
 ///
 /// This module provides a Modbus RTU master for communicating with devices
