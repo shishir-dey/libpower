@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["Relay1Mock","Relay2Mock"],"trait":["Relay"]};

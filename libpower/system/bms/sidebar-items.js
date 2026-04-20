@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["BatteryChemistry","BmsFault"],"mod":["infra","physical","service"],"trait":["Bms"]};

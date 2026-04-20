@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["Temp1Mock","Temp2Mock"],"trait":["TemperatureSensor"]};

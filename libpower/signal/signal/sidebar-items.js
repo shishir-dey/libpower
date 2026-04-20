@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["SignalType","WindowType"],"fn":["add_dc_offset","add_signals","apply_window","compute_enob","compute_power","compute_sfdr","compute_sinad","compute_snr","compute_thd_from_spectrum","dft_magnitude_spectrum","goertzel_magnitude","measure_frequency","phase_difference","scale","slew_rate"],"struct":["Signal","SignalMetrics"]};
