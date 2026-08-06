@@ -71,7 +71,6 @@ src/
 │
 ├── system/                        # System-level implementations
 │   ├── bms/                       # Battery Management System
-│   ├── ess/                       # Energy Storage System
 │   └── ups/                       # Uninterruptible Power Supply
 │       ├── off_grid/
 │       └── on_grid/
